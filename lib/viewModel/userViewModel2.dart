@@ -118,7 +118,10 @@ var actorId;
     dampingLevel = newValue;
     notifyListeners();
   }
+
 ///  Audio Player ......
+ 
+
   final AudioPlayer audioPlayer = AudioPlayer();
   Duration duration = Duration();
   Duration position = Duration();
@@ -126,8 +129,8 @@ var actorId;
   bool isLoading = false;
   bool isPause = false;
 
-  void changeSeek(double value) {
-    audioPlayer.seek(Duration(seconds: value.toInt()));
+  void changeSeek(double musicValue) {
+    audioPlayer.seek(Duration(seconds: musicValue.toInt()));
   }
 
   Future<void> playAudio(String url) async {
@@ -142,17 +145,18 @@ var actorId;
     } else {
       isLoading = true;
       await audioPlayer.setUrl(url);
+      await audioPlayer.play(); // You need to call play() after setting the URL
       isPlaying = true;
     }
 
     audioPlayer.durationStream.listen((d) {
-      duration = d!;
+      duration = d ?? Duration(); // Handle the case where duration is null
       isLoading = false;
       notifyListeners();
     });
 
     audioPlayer.positionStream.listen((p) {
-      position = p;
+      position = p ?? Duration(); // Handle the case where position is null
       notifyListeners();
     });
 
@@ -165,4 +169,13 @@ var actorId;
       }
     });
   }
+
+  void dispose() {
+    audioPlayer.dispose();
+  }
 }
+
+
+
+
+

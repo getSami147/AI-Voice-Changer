@@ -3,9 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
-
-import 'package:audio_wave_url_package/voice_message_package.dart';
-import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:chat_bubbles/bubbles/bubble_normal_audio.dart';
 import 'package:file_picker/file_picker.dart';
@@ -18,10 +15,12 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:voice_maker/assetAudioPlayer.dart';
 import 'package:voice_maker/res/appUrl.dart';
 import 'package:voice_maker/utils/Colors.dart';
 import 'package:voice_maker/utils/Constant.dart';
 import 'package:voice_maker/utils/Images.dart';
+import 'package:voice_maker/utils/audioPlayerdemo.dart';
 import 'package:voice_maker/utils/string.dart';
 import 'package:voice_maker/utils/widget.dart';
 import 'package:voice_maker/view/authView/logIn.dart';
@@ -43,20 +42,6 @@ class CommunityScreen extends StatefulWidget {
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
-  PlayerController controller = PlayerController();
-
-  // waveFormMethod(String path) async {
-  //   // Or directly extract from preparePlayer and initialise audio player
-  //   await controller.preparePlayer(
-  //     path: path,
-  //     shouldExtractWaveform: true,
-  //     noOfSamples: 100,
-  //     volume: 1.0,
-  //   );
-  //   // await controller.startPlayer(finishMode: FinishMode.stop);
-  // }
-
-  ////////
 
   final AudioPlayer audioPlayer = AudioPlayer();
 
@@ -104,17 +89,17 @@ class _CommunityScreenState extends State<CommunityScreen> {
     //     title: appbar_Community,
     //   ),
     //   body:
-    //   // FutureBuilder(
-    //   //     future: HomeViewModel().communityApi(context),
-    //   //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-    //   //       if (snapshot.connectionState == ConnectionState.waiting) {
-    //   //         return const Center(child: CustomLoadingIndicator());
-    //   //       } else if (snapshot.hasError) {
-    //   //         return Center(
-    //   //             child: text(snapshot.error.toString(),
-    //   //                 maxLine: 5, isCentered: true));
-    //   //       } else {
-    //   //         return
+    //   FutureBuilder(
+    //       future: HomeViewModel().fetchCommunityData(context),
+    //       builder: (BuildContext context, AsyncSnapshot snapshot) {
+    //         if (snapshot.connectionState == ConnectionState.waiting) {
+    //           return const Center(child: CustomLoadingIndicator());
+    //         } else if (snapshot.hasError) {
+    //           return Center(
+    //               child: text(snapshot.error.toString(),
+    //                   maxLine: 5, isCentered: true));
+    //         } else {
+    //           return
     //            Consumer<HomeViewModel>(
     //              builder: (BuildContext context, api, Widget? child) {
     //              return ListView.builder(
@@ -196,7 +181,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
     //                 contactPlayIconColor: redColor,
     //                 onPlay: () {
     //                   // print('aaaaaaa  :${isplayed}');
-    //                   playStop();
     //                   playAudioFromUrl(data["audioURL"].toString());
     //                 }, header: {}, // Do something when voice played.
     //               ).paddingTop(spacing_twinty),
@@ -221,7 +205,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
     //                                   });
     //                                   HomeViewModel().likeIncreaseApi(context, data["_id"].toString());
-    //                                   provider2.toggleLike();
+    //                                   // provider2.toggleLike();
+    //                                   api.fetchCommunityData(context);
     //                                   print(data["isLiked"]);
 
     //                                 },
@@ -281,9 +266,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
     //                        })
     //                 .paddingTop(spacing_thirty)
     //                 .paddingSymmetric(horizontal: spacing_twinty);
-    //            },),
-    //         // }
-    //     //  }),
+    //            },);
+    //         }
+    //      }),
     //   floatingActionButton: Consumer<UserViewModel2>(builder: (context, value, child) {
     //     return FloatingActionButton.extended(
     //     elevation: 0,
@@ -322,298 +307,206 @@ class _CommunityScreenState extends State<CommunityScreen> {
     //   },)
     // );
     return Scaffold(
-      body: Center(
-        child: StreamBuilder<http.Response>(
-          stream: HomeViewModel().StreemGetCommunity(context),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CustomLoadingIndicator());
-            } else if (snapshot.hasError) {
-              return Center(
-                  child: text(snapshot.error.toString(), maxLine: 10));
-            } else {
-              
-              var response = jsonDecode(snapshot.data!.body);
-              return ListView.builder(
-                  physics:
-                      const BouncingScrollPhysics(parent: PageScrollPhysics()),
-                  itemCount: response["data"].length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    
-                    //  if (index == api.items.length) {
-                    //        api.fetchCommunityData(context);
-                    //        return Center(child: _buildProgressIndicator());
-                    //  }else{
-                    // var data = snapshot.data["data"][index];
-                    var data = response["data"][index];
-                   
-                    return Card(
-                      elevation: 0,
-                      color: whiteColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              CommunityUserProfile(
-                                userId:
-                                    data["referenceToUser"]["_id"].toString(),
-                              ).launch(context);
-                            },
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 30,
-                                  child: ClipOval(
-                                    child: Image.network(data["referenceToUser"]
-                                            ["userImageURl"]
-                                        .toString()),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: spacing_standard_new,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    text(
-                                      data["referenceToUser"]["name"]
-                                          .toString(),
-                                      googleFonts: GoogleFonts.lato(
-                                          fontSize: textSizeLargeMedium,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          text(
-                            data["communityDescription"].toString(),
-                            maxLine: 5,
-                            googleFonts: GoogleFonts.lato(
-                                fontSize: textSizeSMedium,
-                                fontWeight: FontWeight.w400),
-                          ).paddingTop(spacing_control),
-
-                          Consumer<UserViewModel2>(
-                            builder: (context, audioConsumer, child) {
-                              return BubbleNormalAudio(
-                                color: Color(0xFFE8E8EE),
-                                duration:
-                                    audioConsumer.duration.inSeconds.toDouble(),
-                                position:
-                                    audioConsumer.position.inSeconds.toDouble(),
-                                isPlaying: audioConsumer.isPlaying,
-                                isLoading: audioConsumer.isLoading,
-                                isPause: audioConsumer.isPause,
-                                onSeekChanged:(value) {
-                                  audioConsumer.changeSeek(value);
-                                },
-
-                                onPlayPauseButtonClick: () {
-                                  audioConsumer
-                                      .playAudio(data["audioURL"].toString());
-                                },
-                                sent: true,
-                              );
-                            },
-                          ),
-
-                          ///
-                          data["audioURL"] != null
-                              ? Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        bottom: 6, right: 10, top: 6),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 8, horizontal: 12),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.black.withOpacity(.05),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        // if (!controller.playerState.isStopped)
-                                        IconButton(
-                                          onPressed: () async {
-                                            //  playAudioFromUrl(data["audioURL"].toString());
-
-                                            await controller.preparePlayer(
-                                              path: data["audioURL"].toString(),
-                                              shouldExtractWaveform: true,
-                                              noOfSamples: 100,
-                                              volume: 1.0,
-                                            );
-                                            // if (controller.playerState.isPlaying) {
-                                            //   await controller.pausePlayer();
-                                            // } else {
-                                            //   await controller.startPlayer(finishMode: FinishMode.loop,);
-                                            // }
-                                          },
-                                          icon: Icon(
-                                            controller.playerState.isPlaying
-                                                ? Icons.stop
-                                                : Icons.play_arrow,
-                                            color: Colors
-                                                .blue, // Replace with your color
-                                          ),
-                                          color: Colors.orange,
-                                          highlightColor:
-                                              Colors.blue.withOpacity(.5),
-                                        ),
-                                        AudioFileWaveforms(
-                                          size: Size(
-                                              MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  1.5,
-                                              40),
-                                          playerController: controller,
-                                          backgroundColor: Colors
-                                              .blueGrey, // Replace with your color
-                                          continuousWaveform: true,
-                                          enableSeekGesture: true,
-                                          waveformData: [],
-                                          waveformType: WaveformType.fitWidth,
-                                          playerWaveStyle:
-                                              const PlayerWaveStyle(
-                                            seekLineColor: Colors.pink,
-                                            backgroundColor: Colors.yellow,
-                                            fixedWaveColor: Colors.white54,
-                                            liveWaveColor: Colors
-                                                .blue, // Replace with your color
-                                            spacing: 6,
-                                            showBottom: true,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox.shrink(),
-                          // data["audioURL"]==null? Container():Consumer<UserViewModel2>(builder: (context, v, child) => 
-                          //   VoiceMessage(
-                          //         // audioSrc:"https://download.samplelib.com/mp3/sample-3s.mp3",
-                          //         played: false, // To show played badge or not.
-                          //         me: true, // Set message side.
-                          //         noiseWidth: double.infinity,
-                          //         width: double.infinity,
-                          //         meBgColor: black.withOpacity(.05),
-                          //         meFgColor: colorPrimary,
-                          //         mePlayIconColor: whiteColor,
-                          //         waveColor: colorPrimary,
-                          //         waveBgColor: redColor,
-                          //         duration:const Duration(minutes: 1),
-                          //         showDuration: true,
-                          //         noiseCount:30 ,
-                          //         noiseHeight:20 ,
-                          //         waveForm: [20,20,20],
-                          //         contactPlayIconBgColor: colorPrimary,
-                          //         contactPlayIconColor: redColor,
-                          //         onPlay: () {
-                          
-                          //               v.playAudio(data["audioURL"].toString());
-                          //           // print('aaaaaaa  :${isplayed}');
-                          //           // playStop();
-                          //           // playAudioFromUrl(
-                          //           //   data["audioURL"].toString());
-                          //         }, header: {}, // Do something when voice played.
-                          //       ).paddingTop(spacing_twinty),
-                          // ),
-                          const Divider().paddingTop(spacing_twinty),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        appBar: CustomAppBar(
+        title: appbar_Community,
+      ),
+      body: StreamBuilder<http.Response>(
+        stream: HomeViewModel().StreemGetCommunity(context),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CustomLoadingIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+                child: text(snapshot.error.toString(), maxLine: 10));
+          } else {
+            
+            var response = jsonDecode(snapshot.data!.body);
+            return ListView.builder(
+                physics:
+                    const BouncingScrollPhysics(parent: PageScrollPhysics()),
+                itemCount: response["data"].length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  
+                  //  if (index == api.items.length) {
+                  //        api.fetchCommunityData(context);
+                  //        return Center(child: _buildProgressIndicator());
+                  //  }else{
+                  // var data = snapshot.data["data"][index];
+                  var data = response["data"][index];
+                 
+                  return Card(
+                    elevation: 0,
+                    color: whiteColor,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            CommunityUserProfile(
+                              userId:
+                                  data["referenceToUser"]["_id"].toString(),
+                            ).launch(context);
+                          },
+                          child: Row(
                             children: [
-                              Consumer<UserViewModel>(
-                                builder: (context, likev, child) =>
-                                    AnimatedContainer(
-                                  alignment: Alignment.center,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                  child: Comunity_Likes(
-                                    svgIcons: svg_Like,
-                                    color: data["isLiked"] == false
-                                        ? Colors.grey
-                                        : colorPrimary,
-                                    texts: data["likes"].toString(),
-                                    onPressed: () {
-                                      // setState(() {
-
-                                      // });
-                                    
-                                      HomeViewModel().likeIncreaseApi(context, data["_id"].toString());
-                                      likev.toggleLike();
-                                      print(data["isLiked"]);
-                                    },
+                              CircleAvatar(
+                                radius: 30,
+                                child: ClipOval(
+                                  child: Image.network(data["referenceToUser"]
+                                          ["userImageURl"]
+                                      .toString()),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: spacing_standard_new,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  text(
+                                    data["referenceToUser"]["name"]
+                                        .toString(),
+                                    googleFonts: GoogleFonts.lato(
+                                        fontSize: textSizeLargeMedium,
+                                        fontWeight: FontWeight.w600),
                                   ),
-                                ),
-                              ),
-                              Comunity_Likes(
-                                svgIcons: svg_Comment,
-                                texts: "",
-                                onPressed: () {
-                                  provider2
-                                      .getCommunityId(data["_id"].toString());
-                                  CommunityComment(
-                                    communityData: data,
-                                  ).launch(context,
-                                      pageRouteAnimation:
-                                          PageRouteAnimation.Fade);
-                                },
-                              ),
-                              Consumer<UserViewModel>(
-                                builder: (context, value2, child) =>
-                                    Comunity_Likes(
-                                  svgIcons: svg_Download,
-                                  texts: "${data["downloads"]}",
-                                  onPressed: () {
-                                    download(data["audioURL"]).then((value) =>
-                                        HomeViewModel().downloadIncreaseApi(
-                                            context, data["_id"].toString()));
-                                  },
-                                ),
-                              ),
-                              Consumer<UserViewModel>(
-                                builder: (context, value3, child) =>
-                                    Comunity_Likes(
-                                  svgIcons: svg_Share,
-                                  texts: "${data["shares"]}",
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(35),
-                                              topRight: Radius.circular(35))),
-                                      context: context,
-                                      builder: (context) {
-                                        // SharePage page Called (Model BottomSheet)............>>
-                                        return ShareVoice(
-                                          voiceUrl: data["audioURL"].toString(),
-                                          shareId: data["_id"],
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ).paddingSymmetric(
-                          horizontal: spacing_twinty,
-                          vertical: spacing_standard_new),
-                    );
-                    // }
-                  });
-            }
-          },
-        ),
-      ),
+                        ),
+
+                        text(
+                          data["communityDescription"].toString(),
+                          maxLine: 5,
+                          googleFonts: GoogleFonts.lato(
+                              fontSize: textSizeSMedium,
+                              fontWeight: FontWeight.w400),
+                        ).paddingTop(spacing_control),
+                        AssetAudioPlayer(
+              audioUrl:data["audioURL"].toString(),
+                  // 'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Music_for_Video/springtide/Sounds_strange_weird_but_unmistakably_romantic_Vol1/springtide_-_03_-_We_Are_Heading_to_the_East.mp3',
+              imageUrl: "",
+              name: 'Sami Ullah',
+              appName: 'AI Voice Changer',
+            ),
+
+                     data["audioURL"] != null
+                            ?     Consumer<UserViewModel2>(
+                          builder: (context, audioConsumer, child) {
+                            return BubbleNormalAudio(
+                            
+                              color: Color(0xFFE8E8EE),
+                              duration:
+                                  audioConsumer.duration.inSeconds.toDouble(),
+                              position:
+                                  audioConsumer.position.inSeconds.toDouble(),
+                              isPlaying: audioConsumer.isPlaying,
+                              isLoading: audioConsumer.isLoading,
+                              isPause: audioConsumer.isPause,
+                              onSeekChanged:(value) {
+                                audioConsumer.changeSeek(value);
+                              },
+
+                              onPlayPauseButtonClick: () {
+                                audioConsumer
+                                    .playAudio(data["audioURL"].toString());
+                              },
+                            );
+                          },
+                        ):const SizedBox.shrink(),
+
+
+
+                        const Divider().paddingTop(spacing_twinty),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Consumer<UserViewModel>(
+                              builder: (context, like, child) =>
+                                  AnimatedContainer(
+                                alignment: Alignment.center,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                                child: Comunity_Likes(
+                                  svgIcons: svg_Like,
+                                  color: data["isLiked"] == false
+                                      ? Colors.grey
+                                      : colorPrimary,
+                                  texts: data["likes"].toString(),
+                                  onPressed: () {
+                                    // setState(() {
+
+                                    // });
+                                  
+                                    HomeViewModel().likeIncreaseApi(context, data["_id"].toString());
+                                    // likev.toggleLike();
+                                    print("Comminty Like:  "+data["isLiked"].toString());
+                                  },
+                                ),
+                              ),
+                            ),
+                            Comunity_Likes(
+                              svgIcons: svg_Comment,
+                              texts: "",
+                              onPressed: () {
+                                provider2
+                                    .getCommunityId(data["_id"].toString());
+                                CommunityComment(
+                                  communityData: data,
+                                ).launch(context,
+                                    pageRouteAnimation:
+                                        PageRouteAnimation.Fade);
+                              },
+                            ),
+                            Consumer<UserViewModel>(
+                              builder: (context, value2, child) =>
+                                  Comunity_Likes(
+                                svgIcons: svg_Download,
+                                texts: "${data["downloads"]}",
+                                onPressed: () {
+                                  download(data["audioURL"]).then((value) =>
+                                      HomeViewModel().downloadIncreaseApi(
+                                          context, data["_id"].toString()));
+                                },
+                              ),
+                            ),
+                            Consumer<UserViewModel>(
+                              builder: (context, value3, child) =>
+                                  Comunity_Likes(
+                                svgIcons: svg_Share,
+                                texts: "${data["shares"]}",
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(35),
+                                            topRight: Radius.circular(35))),
+                                    context: context,
+                                    builder: (context) {
+                                      // SharePage page Called (Model BottomSheet)............>>
+                                      return ShareVoice(
+                                        voiceUrl: data["audioURL"].toString(),
+                                        shareId: data["_id"],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ).paddingSymmetric(
+                        horizontal: spacing_standard_new,
+                        vertical: spacing_standard_new),
+                  );
+                  // }
+                });
+          }
+        },
+      ).paddingSymmetric(horizontal:spacing_twinty),
     );
   }
 }

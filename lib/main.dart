@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:voice_maker/assetAudioPlayer.dart';
+import 'package:voice_maker/utils/audioPlayerdemo.dart';
 import 'package:voice_maker/view/screens/overview.dart';
 import 'package:voice_maker/utils/colors.dart';
 import 'package:voice_maker/view/sateManagement.dart';
@@ -17,6 +19,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 enum SocialMedia{whatsapp,whatsappBusiness,facebook,messanger,twitter,instagram,linkedin,message}
 
 Future  main() async {
+  
   WidgetsFlutterBinding.ensureInitialized();
   
 Stripe.publishableKey ="pk_test_51LjgmuBd21JmgpA7CGR2y2I6RgHjP9YgRDxS6u1JSUzHYw9FdqXE1qThg3ND2Hz0QUumdjHT2jCHWdC5EWXuIQJO00DYKk6w3P";

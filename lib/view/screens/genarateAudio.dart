@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:audio_wave_url_package/voice_message_package.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -100,31 +98,31 @@ Future<void> download(String url) async {
                           fontSize: textSizeSMedium,
                           fontWeight: FontWeight.w500),
                     ).paddingTop(spacing_control_half),
-                    VoiceMessage(
-                      // audioSrc:"https://download.samplelib.com/mp3/sample-3s.mp3",
-                      played: false, // To show played badge or not.
-                      me: true, // Set message side.
-                      noiseWidth: double.infinity,
-                      width: double.infinity,
-                      meBgColor: black.withOpacity(.05),
-                      meFgColor: colorPrimary,
-                      mePlayIconColor: whiteColor,
-                      waveColor: colorPrimary,
-                      waveBgColor: redColor,
-                      duration: const Duration(minutes: 1),
-                      showDuration: true,
-                      noiseCount: 30,
-                      noiseHeight: 20,
-                      waveForm: [20, 20, 20],
-                      contactPlayIconBgColor: colorPrimary,
-                      contactPlayIconColor: redColor,
-                      onPlay: () {
-                        playAudioFromUrl(provider.url.toString());
-                      },
-                      header: const {
+                    // VoiceMessage(
+                    //   // audioSrc:"https://download.samplelib.com/mp3/sample-3s.mp3",
+                    //   played: false, // To show played badge or not.
+                    //   me: true, // Set message side.
+                    //   noiseWidth: double.infinity,
+                    //   width: double.infinity,
+                    //   meBgColor: black.withOpacity(.05),
+                    //   meFgColor: colorPrimary,
+                    //   mePlayIconColor: whiteColor,
+                    //   waveColor: colorPrimary,
+                    //   waveBgColor: redColor,
+                    //   duration: const Duration(minutes: 1),
+                    //   showDuration: true,
+                    //   noiseCount: 30,
+                    //   noiseHeight: 20,
+                    //   waveForm: [20, 20, 20],
+                    //   contactPlayIconBgColor: colorPrimary,
+                    //   contactPlayIconColor: redColor,
+                    //   onPlay: () {
+                    //     playAudioFromUrl(provider.url.toString());
+                    //   },
+                    //   header: const {
                         
-                      }, 
-                    ).paddingTop(spacing_thirty),
+                    //   }, 
+                    // ).paddingTop(spacing_thirty),
                     Row(
                       children: [
                         Expanded(

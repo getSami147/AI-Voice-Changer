@@ -1,4 +1,3 @@
-import 'package:audio_wave_url_package/voice_message_package.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -132,30 +131,7 @@ class CommunityUserProfile extends StatelessWidget {
                                 fontSize: textSizeSMedium,
                                 fontWeight: FontWeight.w400),
                           ).paddingTop(spacing_control),
-                    VoiceMessage(
-                    // audioSrc:"https://download.samplelib.com/mp3/sample-3s.mp3",
-                    played: false, // To show played badge or not.
-                    me: true, // Set message side.
-                    noiseWidth: double.infinity,
-                    width: double.infinity,
-                    meBgColor: black.withOpacity(.05),
-                    meFgColor: colorPrimary,
-                    mePlayIconColor: whiteColor,
-                    waveColor: colorPrimary,
-                    waveBgColor: redColor,                  
-                    duration:const Duration(minutes: 1),
-                    showDuration: true,
-                    noiseCount:30 ,
-                    noiseHeight:20 ,
-                    waveForm: [20,20,20],
-                    contactPlayIconBgColor: colorPrimary,
-                    contactPlayIconColor: redColor,
-                    onPlay: () {
-                      // print('aaaaaaa  :${isplayed}');
-                      // playStop();
-                      // playAudioFromUrl(data["audioURL"].toString());
-                    }, header: {}, // Do something when voice played.
-                  ).paddingTop(spacing_twinty),
+                   
                           const Divider().paddingTop(spacing_twinty),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

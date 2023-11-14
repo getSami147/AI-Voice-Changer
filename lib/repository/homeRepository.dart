@@ -43,7 +43,7 @@ class HomeRepository {
     try {
       dynamic response = await apiServices.getApi(
         '${AppUrls.urlCommunityAll}?limit=$limit&page=$page',
-        headers,
+        headers,query: "populate=referenceToUser"
       // dynamic response = await apiServices.getApi(AppUrls.urlCommunityAll, headers);
       // return response;
       );

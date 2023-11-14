@@ -60,6 +60,8 @@ class HomeViewModel with ChangeNotifier {
       loadingcommunity = false;
       notifyListeners();
     }
+      notifyListeners();
+
   }
 
   // communityApi..............................................................>>

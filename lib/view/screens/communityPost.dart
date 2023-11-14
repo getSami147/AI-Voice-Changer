@@ -1,4 +1,3 @@
-import 'package:audio_wave_url_package/voice_message_package.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -99,48 +98,48 @@ class _communityPostState extends State<communityPost> {
                         filledColor: filledColor,
                         hinttext: "Write Somthing here..",
                       ).paddingTop(spacing_control),
-                    filePath != null
-                          ? 
-                          VoiceMessage(
-                              audioSrc: filePath.toString(),
-                              played: true, // To show played badge or not.
-                              me: true, // Set message side.
-                              meBgColor: black.withOpacity(.05),
-                              noiseWidth: double.infinity,
-                              width: double.infinity,
-                              meFgColor: colorPrimary,
-                              mePlayIconColor: whiteColor,
-                              duration: const Duration(minutes: 5),
-                              showDuration: true,
-                              noiseCount: 30,
-                              onPlay: () {
-                                // playAudio();
-                              },
-                              header: {}, // Do something when voice played.
-                            )
-                            .paddingTop(spacing_twinty)
-                          : Row(
-                              children: [
-                                text("Choose audio file"),
-                                TextButton(
-                                    style: const ButtonStyle(),
-                                    onPressed: () {
-                                      pickAudio();
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          svg_uplaod,
-                                          height: 20,
-                                          width: 20,
-                                          color: colorPrimary,
-                                        ),
-                                        //  text("Pick Voice").paddingLeft(spacing_middle),
-                                      ],
-                                    )),
-                              ],
-                            ).paddingTop(spacing_thirty),
+                    // filePath != null
+                    //       ? 
+                    //       VoiceMessage(
+                    //           audioSrc: filePath.toString(),
+                    //           played: true, // To show played badge or not.
+                    //           me: true, // Set message side.
+                    //           meBgColor: black.withOpacity(.05),
+                    //           noiseWidth: double.infinity,
+                    //           width: double.infinity,
+                    //           meFgColor: colorPrimary,
+                    //           mePlayIconColor: whiteColor,
+                    //           duration: const Duration(minutes: 5),
+                    //           showDuration: true,
+                    //           noiseCount: 30,
+                    //           onPlay: () {
+                    //             // playAudio();
+                    //           },
+                    //           header: {}, // Do something when voice played.
+                    //         )
+                    //         .paddingTop(spacing_twinty)
+                    //       : Row(
+                    //           children: [
+                    //             text("Choose audio file"),
+                    //             TextButton(
+                    //                 style: const ButtonStyle(),
+                    //                 onPressed: () {
+                    //                   pickAudio();
+                    //                 },
+                    //                 child: Row(
+                    //                   mainAxisAlignment: MainAxisAlignment.center,
+                    //                   children: [
+                    //                     SvgPicture.asset(
+                    //                       svg_uplaod,
+                    //                       height: 20,
+                    //                       width: 20,
+                    //                       color: colorPrimary,
+                    //                     ),
+                    //                     //  text("Pick Voice").paddingLeft(spacing_middle),
+                    //                   ],
+                    //                 )),
+                    //           ],
+                    //         ).paddingTop(spacing_thirty),
                       const Divider().paddingTop(spacing_middle),
                       GradientButton(
                           onPressed: () {
