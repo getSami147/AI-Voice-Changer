@@ -96,10 +96,11 @@ class NetworkApiServices extends BaseApiServices {
         throw jsonDecode(response.body)["message"].toString();
       case 500:
         throw jsonDecode(response.body)["message"].toString();
-
+      case 503:
+        throw jsonDecode(response.body)["message"].toString();
       default:
         throw FatchDataExceptions(
-            "Error occur While Fatching The Data:  ${response.statusCode}");
+            "Please check your internet connection");
     }
   }
   

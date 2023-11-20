@@ -28,9 +28,8 @@ class AuthViewModel with ChangeNotifier {
   // getMeApi..............................................................>>
   Future<void> getMeApi(
       BuildContext context,) async {
-    // await authRepository.getMeApi(context).then((value) => {});
-    return  authRepository.getMeApi(context).onError(
-        (error, stackTrace) => utils().flushBar(context, error.toString()));
+    //  authRepository.getMeApi(context).then((value) => {});
+    return  authRepository.getMeApi(context);
   }
 
 // Post APIs //.........................................................................>>

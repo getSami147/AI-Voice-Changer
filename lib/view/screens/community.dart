@@ -42,18 +42,31 @@ class CommunityScreen extends StatefulWidget {
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
+  // void playerAudiourl(String url) async {
+  //   await audioPlayer.play(UrlSource(url));
+  // }
 
-  final AudioPlayer audioPlayer = AudioPlayer();
-
-  Future<void> playAudioFromUrl(String playAudiourl) async {
-    await audioPlayer.play(UrlSource(playAudiourl));
-  }
+  // void stopAudio() {
+  //   audioPlayer.stop();
+  //   setState(() {
+  //     isPlaying = false;
+  //   });
+  // }
 
   // var isplayed = false;
 
   // playStop() {
   //   isplayed = !isplayed;
   // }
+
+  @override
+  void initState() {
+    super.initState();
+    var provider2 = Provider.of<UserViewModel>(context, listen: false);
+    provider2.audioPlayerProvider();
+    provider2.setAudio();
+  }
+
   Future<void> download(String url) async {
     var status = await Permission.storage.request();
     if (status.isGranted) {
@@ -307,7 +320,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
     //   },)
     // );
     return Scaffold(
-        appBar: CustomAppBar(
+      appBar: CustomAppBar(
         title: appbar_Community,
       ),
       body: StreamBuilder<http.Response>(
@@ -316,10 +329,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CustomLoadingIndicator());
           } else if (snapshot.hasError) {
-            return Center(
-                child: text(snapshot.error.toString(), maxLine: 10));
+            return Center(child: text(snapshot.error.toString(), maxLine: 10));
           } else {
-            
             var response = jsonDecode(snapshot.data!.body);
             return ListView.builder(
                 physics:
@@ -327,14 +338,13 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 itemCount: response["data"].length,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  
                   //  if (index == api.items.length) {
                   //        api.fetchCommunityData(context);
                   //        return Center(child: _buildProgressIndicator());
                   //  }else{
                   // var data = snapshot.data["data"][index];
                   var data = response["data"][index];
-                 
+
                   return Card(
                     elevation: 0,
                     color: whiteColor,
@@ -344,8 +354,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                         GestureDetector(
                           onTap: () {
                             CommunityUserProfile(
-                              userId:
-                                  data["referenceToUser"]["_id"].toString(),
+                              userId: data["referenceToUser"]["_id"].toString(),
                             ).launch(context);
                           },
                           child: Row(
@@ -365,12 +374,73 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   text(
-                                    data["referenceToUser"]["name"]
-                                        .toString(),
+                                    data["referenceToUser"]["name"].toString(),
                                     googleFonts: GoogleFonts.lato(
                                         fontSize: textSizeLargeMedium,
                                         fontWeight: FontWeight.w600),
                                   ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        Container(
+                          alignment: Alignment.center,
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: radiusCircular(10),
+                              topLeft: radiusCircular(10),
+                              topRight: radiusCircular(10),
+                            ),
+                            color: const Color(0xFFE8E8EE),
+                          ),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  if (provider2.isPlaying) {
+                                    await provider2.audioPlayer.pause();
+                                  } else {
+
+                                    provider2.audioPlayer.play(
+                                        UrlSource(data["audioURL"].toString()));
+                                    provider2.isPlaying = true;
+                                  }
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: colorPrimary,
+                                  child: Icon(
+                                    provider2.isPlaying
+                                        ? Icons.pause
+                                        : Icons.play_arrow,
+                                    size: 30,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Slider(
+                                activeColor: colorPrimary,
+                                inactiveColor: colorPrimaryS.withOpacity(.3),
+                                  min: 0,
+                                  max: provider2.duration.inSeconds.toDouble(),
+                                  value:
+                                      provider2.position.inSeconds.toDouble(),
+                                  onChanged: (value) async {
+                                    final position =
+                                        Duration(seconds: value.toInt());
+                                    await provider2.audioPlayer.seek(position);
+                                    await provider2.audioPlayer.resume();
+                                  }),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(formatTime(provider2.position)),
+                                  Text(formatTime(
+                                      provider2.duration - provider2.position))
                                 ],
                               ),
                             ],
@@ -384,40 +454,39 @@ class _CommunityScreenState extends State<CommunityScreen> {
                               fontSize: textSizeSMedium,
                               fontWeight: FontWeight.w400),
                         ).paddingTop(spacing_control),
-                        AssetAudioPlayer(
-              audioUrl:data["audioURL"].toString(),
-                  // 'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Music_for_Video/springtide/Sounds_strange_weird_but_unmistakably_romantic_Vol1/springtide_-_03_-_We_Are_Heading_to_the_East.mp3',
-              imageUrl: "",
-              name: 'Sami Ullah',
-              appName: 'AI Voice Changer',
-            ),
+                        
+                          AssetAudioPlayer(
+                          audioUrl:data["audioURL"].toString(),
+                              // 'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Music_for_Video/springtide/Sounds_strange_weird_but_unmistakably_romantic_Vol1/springtide_-_03_-_We_Are_Heading_to_the_East.mp3',
+                          imageUrl: "",
+                          name: 'Sami Ullah',
+                          appName: 'AI Voice Changer',
+                        ),
 
-                     data["audioURL"] != null
-                            ?     Consumer<UserViewModel2>(
-                          builder: (context, audioConsumer, child) {
-                            return BubbleNormalAudio(
-                            
-                              color: Color(0xFFE8E8EE),
-                              duration:
-                                  audioConsumer.duration.inSeconds.toDouble(),
-                              position:
-                                  audioConsumer.position.inSeconds.toDouble(),
-                              isPlaying: audioConsumer.isPlaying,
-                              isLoading: audioConsumer.isLoading,
-                              isPause: audioConsumer.isPause,
-                              onSeekChanged:(value) {
-                                audioConsumer.changeSeek(value);
-                              },
+                        //  data["audioURL"] != null
+                        //         ?     Consumer<UserViewModel2>(
+                        //       builder: (context, audioConsumer, child) {
+                        //         return BubbleNormalAudio(
 
-                              onPlayPauseButtonClick: () {
-                                audioConsumer
-                                    .playAudio(data["audioURL"].toString());
-                              },
-                            );
-                          },
-                        ):const SizedBox.shrink(),
+                        //           color: Color(0xFFE8E8EE),
+                        //           duration:
+                        //               audioConsumer.duration.inSeconds.toDouble(),
+                        //           position:
+                        //               audioConsumer.position.inSeconds.toDouble(),
+                        //           isPlaying: audioConsumer.isPlaying,
+                        //           isLoading: audioConsumer.isLoading,
+                        //           isPause: audioConsumer.isPause,
+                        //           onSeekChanged:(value) {
+                        //             audioConsumer.changeSeek(value);
+                        //           },
 
-
+                        //           onPlayPauseButtonClick: () {
+                        //             audioConsumer
+                        //                 .playAudio(data["audioURL"].toString());
+                        //           },
+                        //         );
+                        //       },
+                        //     ):const SizedBox.shrink(),
 
                         const Divider().paddingTop(spacing_twinty),
                         Row(
@@ -439,10 +508,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
                                     // setState(() {
 
                                     // });
-                                  
-                                    HomeViewModel().likeIncreaseApi(context, data["_id"].toString());
+
+                                    HomeViewModel().likeIncreaseApi(
+                                        context, data["_id"].toString());
                                     // likev.toggleLike();
-                                    print("Comminty Like:  "+data["isLiked"].toString());
+                                    print("Comminty Like:  " +
+                                        data["isLiked"].toString());
                                   },
                                 ),
                               ),
@@ -506,8 +577,16 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 });
           }
         },
-      ).paddingSymmetric(horizontal:spacing_twinty),
+      ).paddingSymmetric(horizontal: spacing_twinty),
     );
+  }
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return [if (duration.inMinutes > 0) minutes, seconds].join(':');
   }
 }
 

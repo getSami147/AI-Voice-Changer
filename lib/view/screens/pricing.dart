@@ -8,6 +8,7 @@ import 'package:voice_maker/utils/constant.dart';
 import 'package:voice_maker/utils/string.dart';
 import 'package:voice_maker/utils/widget.dart';
 import 'package:voice_maker/view/authView/logIn.dart';
+import 'package:voice_maker/view/screens/subscription_process.dart';
 import 'package:voice_maker/viewModel/homeViewModel.dart';
 import 'package:voice_maker/viewModel/userViewModel2.dart';
 
@@ -87,7 +88,8 @@ class _PricingScreenState extends State<PricingScreen> {
                                   ).paddingTop(spacing_thirty),
                                   GradientButton(
                                           onPressed: ()async {
-                                           await HomeViewModel().makePayment(amount: "200", currency: 'USD');
+                                          //  await HomeViewModel().makePayment(amount: "200", currency: 'USD');
+                                          init("\$ ${ data['price'].toString()}");
                                           },
                                           child: text("Get started",
                                               textAllCaps: true,

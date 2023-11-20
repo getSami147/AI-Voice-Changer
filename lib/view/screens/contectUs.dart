@@ -47,7 +47,7 @@ class _ContactUsState extends State<ContactUs> {
   Widget build(BuildContext context) {
     var provider = Provider.of<UserViewModel>(context, listen: false);
   nameController.text= provider.getname;
-  emailController.text= provider.getemail;
+  // emailController.text= provider.getemail;
     
 
     return Scaffold(

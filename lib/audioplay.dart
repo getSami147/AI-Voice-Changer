@@ -1,115 +1,147 @@
-// import 'dart:async';
-// import 'dart:convert';
-// import 'package:flutter/material.dart';
+
 // import 'package:audioplayers/audioplayers.dart';
-// import 'package:audio_wave/audio_wave.dart';
-// import 'package:http/http.dart'as http;
-// import 'package:voice_maker/utils/widget.dart';
-// import 'package:voice_maker/viewModel/homeViewModel.dart';
+// import 'package:flutter/material.dart';
+// import 'package:just_audio/just_audio.dart';
 
+// class HomeScreen extends StatefulWidget {
+//   const HomeScreen({Key? key}) : super(key: key);
 
-// class VoicePlayer extends StatefulWidget {
 //   @override
-//   _VoicePlayerState createState() => _VoicePlayerState();
+//   State<HomeScreen> createState() => _HomeScreenState();
 // }
 
-// class _VoicePlayerState extends State<VoicePlayer> {
-//   final AudioPlayer audioPlayer = AudioPlayer();
+// class _HomeScreenState extends State<HomeScreen> {
 
-//   Future<void> playAudioFromUrl(String playAudiourl) async {
-//     await audioPlayer.play(UrlSource(playAudiourl));
-//   }
 //   bool isPlaying = false;
+//   Duration duration = Duration.zero;
+//   Duration postion = Duration.zero;
+
+//   void playerAudiourl(String url) async {
+//     await player.play(UrlSource(url));
+//   }
+
+//   void stopAudio() {
+//     player.stop();
+//     setState(() {
+//       isPlaying = false;
+//     });
+//   }
+
+//   @override
+//   void initState() {
+//     setAudio();
+//     player.onPlayerStateChanged.listen((State) {
+//       setState(() {
+//         isPlaying = State == PlayerState.playing;
+//       });
+//     });
+//     player.onDurationChanged.listen((newDuration) {
+//       setState(() {
+//         duration = newDuration;
+//       });
+//     });
+//     player.onPositionChanged.listen((newPosition) {
+//       setState(() {
+//         postion = newPosition;
+//       });
+//     });
+
+//     super.initState();
+//   }
+
+//   Future setAudio() async {
+//     player.setReleaseMode(ReleaseMode.stop);
+//   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text('Voice Player'),
+//         centerTitle: true,
+//         title: const Text('HomeScreen'),
 //       ),
-//       body: Center(
+//       body: SingleChildScrollView(
 //         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             Container(
-//               height: 200,
-//               child: StreamBuilder<http.Response>(
-//                 stream:HomeViewModel(). fetchData(context),
-//                 builder: (context, snapshot) {
-// var response = jsonDecode(snapshot.data!.body);
-// return ListView.builder(
-//                     itemCount:response["data"].length ,
-//                     itemBuilder: (BuildContext context, int index) {  
-//                   var data=  response["data"][index];
-//                   print(response.data);
+//           children: [
+//             // FutureBuilder(
+//             //   future: AuthViewModel().getMeApi(context),
+//             //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+//             //     if (snapshot.connectionState == ConnectionState.waiting) {
+//             //       return const Center(child: CircularProgressIndicator());
+//             //     } else if (snapshot.hasError) {
+//             //       return Text(" error :${e.toString()}");
+//             //     } else {
+//             //       //print('data......${snapshot.data}');
+//             //       return Container();
+//             //     }
+//             //   },
+//             // ),
+//             Column(
+//               children: [
+//                 Column(
+//                   children: [
+//                     Slider(
+//                         min: 0,
+//                         max: duration.inSeconds.toDouble(),
+//                         value: postion.inSeconds.toDouble(),
+//                         onChanged: (value) async {
+//                           final position = Duration(seconds: value.toInt());
+//                           await player.seek(position);
+//                           await player.resume();
+//                         }),
+//                     Padding(
+//                       padding: const EdgeInsets.symmetric(horizontal: 16),
+//                       child: Row(
+//                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                         children: [
+//                           Text(formatTime(postion)),
+//                           Text(formatTime(duration - postion))
+//                         ],
+//                       ),
+//                     ),
+//                     CircleAvatar(
+//                       radius: 35,
+//                       child: Center(
+//                         child: IconButton(
+//                           onPressed: () async {
+//                             if (isPlaying) {
+//                               await player.pause();
+//                             } else {
+//                               player.play(UrlSource(
+//                                       'https://multivendorswedenuzrtech.s3.amazonaws.com/v1-mixkit-female-microphone-countdown-341.wav')
 
-//                     return
-                     
-//                  }, );
-//                 },
-//               ),
-//             ),
-      
-          
+//                                   // snapshot.data['data'][0]['audioURL']
+
+//                                   );
+//                               setState(() {
+//                                 isPlaying = true;
+//                               });
+//                             }
+//                           },
+//                           icon: Icon(
+//                             isPlaying ? Icons.pause : Icons.play_arrow,
+//                             size: 30,
+//                           ),
+//                         ),
+//                       ),
+//                     )
+//                   ],
+//                 ),
+              
+//               ],
+//             )
 //           ],
 //         ),
 //       ),
 //     );
 //   }
 
-//   @override
-//   void dispose() {
-//     audioPlayer.stop();
-//     super.dispose();
+//   String formatTime(Duration duration) {
+//     String twoDigits(int n) => n.toString().padLeft(2, '0');
+
+//     final houres = twoDigits(duration.inHours);
+//     final minutes = twoDigits(duration.inMinutes.remainder(60));
+//     final seconds = twoDigits(duration.inSeconds.remainder(60));
+//     return [if (duration.inHours > 0) houres, minutes, seconds].join(':');
 //   }
 // }
-
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:just_waveform/just_waveform.dart';
-
-
-class WaveformAudioPlayerClass extends StatefulWidget {
-  final String audioUrl;
-
-  const WaveformAudioPlayerClass({required this.audioUrl, Key? key}) : super(key: key);
-
-  @override
-  _WaveformAudioPlayerClassState createState() => _WaveformAudioPlayerClassState();
-}
-
-class _WaveformAudioPlayerClassState extends State<WaveformAudioPlayerClass> {
-  // late AudioController _audioController;
-
-  @override
-  void initState() {
-    super.initState();
-    // _audioController = AudioController(url: widget.audioUrl, onLoading: () {});
-  }
-
-  @override
-  void dispose() {
-    // _audioController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        WaveformAudioPlayerClass(audioUrl: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Music_for_Video/springtide/Sounds_strange_weird_but_unmistakably_romantic_Vol1/springtide_-_03_-_We_Are_Heading_to_the_East.mp3"),
-        // ElevatedButton(
-        //   onPressed: () {
-        //     // if (_audioController.isPlaying) {
-        //     //   _audioController.pause();
-        //     // } else {
-        //     //   _audioController.play();
-        //     // }
-        //   },
-        //   child: Text(_audioController.isPlaying ? 'Pause' : 'Play'),
-        // ),
-      ],
-    );
-  }
-}

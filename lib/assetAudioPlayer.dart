@@ -10,6 +10,7 @@ class AssetAudioPlayer extends StatefulWidget {
   var imageUrl;
   var name;
   var appName;
+  
   AssetAudioPlayer({required this.audioUrl,this.imageUrl,this.name, this.appName, super.key});
   @override
   _AssetAudioPlayerState createState() => _AssetAudioPlayerState();
@@ -24,10 +25,9 @@ class _AssetAudioPlayerState extends State<AssetAudioPlayer> {
   void initState() {
     super.initState();
     _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
-    _subscriptions.add(_assetsAudioPlayer.playlistAudioFinished.listen((data) {
-      return openPlayer();
-      // print('playlistAudioFinished : $data');
-    }));
+    // _subscriptions.add(_assetsAudioPlayer.playlistAudioFinished.listen((data) {
+    //   print('playlistAudioFinished : $data');
+    // }));
     // _subscriptions.add(_assetsAudioPlayer.audioSessionId.listen((sessionId) {
     //   return openPlayer();
     //   // print('audioSessionId : $sessionId');
@@ -56,12 +56,12 @@ class _AssetAudioPlayerState extends State<AssetAudioPlayer> {
     );
   }
 
-  @override
-  void dispose() {
-    _assetsAudioPlayer.dispose();
-    print('dispose');
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _assetsAudioPlayer.dispose();
+  //   print('dispose');
+  //   super.dispose();
+  // }
 
   Audio find(List<Audio> source, String fromPath) {
     return source.firstWhere((element) => element.path == fromPath);
@@ -77,8 +77,6 @@ class _AssetAudioPlayerState extends State<AssetAudioPlayer> {
         bottomLeft:radiusCircular(10),
         topLeft:radiusCircular(10),
         topRight:radiusCircular(10),
-        
-
         )
       ),
       child: _assetsAudioPlayer.builderCurrent(
@@ -88,73 +86,16 @@ class _AssetAudioPlayerState extends State<AssetAudioPlayer> {
               PlayerBuilder.isPlaying(
                 player: _assetsAudioPlayer,
                 builder: (context, isPlaying) {
-                  return PlayingControls(
-                    isPlaying: isPlaying,
-                    // onStop: () {
-                    //   _assetsAudioPlayer.stop();
-                    // },
-                    onPlay: () {
-                      _assetsAudioPlayer.playOrPause();
-                    },
-                  );
-                },
-              ),      
-              Expanded(
-                child: _assetsAudioPlayer.builderRealtimePlayingInfos(
-                  builder: (context, RealtimePlayingInfos? infos) {
-                    if (infos == null) {
-                      return const Text("Please Wait...");
-                      }
-                    return PositionSeekWidget(
-                      currentPosition: infos.currentPosition,
-                      duration: infos.duration,
-                      seekTo: (to) {
-                        _assetsAudioPlayer.seek(to);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-      
-  }
-}
-
-class PlayingControls extends StatelessWidget {
-  final bool isPlaying;
-  // final LoopMode? loopMode;
-  // final bool isPlaylist;
-  // final Function()? onPrevious;
-  final Function() onPlay;
-  // final Function()? onNext;
-  // final Function()? toggleLoop;
-  // final Function()? onStop;
-
-  PlayingControls({
-    required this.isPlaying,
-    // this.isPlaylist = false,
-    // this.loopMode,
-    // this.toggleLoop,
-    // this.onPrevious,
-    required this.onPlay,
-    // this.onNext,
-    // this.onStop,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
+                  return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 5,right: 5),
           child: InkWell(
-            onTap: onPlay,
+            onTap: () {
+              _assetsAudioPlayer.playOrPause();
+            },
             child: Container(
               padding: const EdgeInsets.all(5),
               decoration:  const BoxDecoration(
@@ -175,9 +116,73 @@ class PlayingControls extends StatelessWidget {
           ),
         ),
       ],
+    );          
+                  //  PlayingControls(
+                  //   isPlaying: isPlaying,
+                  //   // onStop: () {
+                  //   //   _assetsAudioPlayer.stop();
+                  //   // },
+                  //   onPlay: () {
+                  //     _assetsAudioPlayer.playOrPause();
+                  //   },
+                  // );
+     },),      
+              Expanded(
+                child: _assetsAudioPlayer.builderRealtimePlayingInfos(
+                  builder: (context, RealtimePlayingInfos? infos) {
+
+                    if (infos == null) {
+                      return CircularProgressIndicator();
+                      }else{
+                        return PositionSeekWidget(
+
+                      currentPosition: infos.currentPosition,
+                      duration: infos.duration,
+                      seekTo: (to) {
+                        _assetsAudioPlayer.seek(to);
+                      },
+                    );
+                      }
+                   
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
+      
   }
 }
+
+// class PlayingControls extends StatelessWidget {
+//   final bool isPlaying;
+//   // final LoopMode? loopMode;
+//   // final bool isPlaylist;
+//   // final Function()? onPrevious;
+//   final Function() onPlay;
+//   // final Function()? onNext;
+//   // final Function()? toggleLoop;
+//   // final Function()? onStop;
+
+//   PlayingControls({
+//     required this.isPlaying,
+//     // this.isPlaylist = false,
+//     // this.loopMode,
+//     // this.toggleLoop,
+//     // this.onPrevious,
+//     required this.onPlay,
+//     // this.onNext,
+//     // this.onStop,
+//   });
+
+//   // @override
+//   // Widget build(BuildContext context) {
+//   //   return 
+    
+//   // }
+// }
 
 class PositionSeekWidget extends StatefulWidget {
   final Duration currentPosition;

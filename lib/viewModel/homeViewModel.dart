@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:voice_maker/data/appException.dart';
 import 'package:voice_maker/repository/homeRepository.dart';
 import 'package:voice_maker/res/appUrl.dart';
 import 'package:voice_maker/utils/widget.dart';
@@ -225,15 +227,19 @@ class HomeViewModel with ChangeNotifier {
         yield response;
         notifyListeners();
 
-      } else {
-        yield response;
+      }else if(response.statusCode==503){
+
+      }
+       else {
+throw FatchDataExceptions("Please check your internet connection");
       }
       // await Future.delayed(Duration(seconds: 5)); 
     
       // Adjust the delay as needed
 
-    } catch (e) {
-      text(e.toString());
+    } on SocketException{
+throw InternetException("");
+
     }
     }
   }
@@ -485,5 +491,70 @@ class HomeViewModel with ChangeNotifier {
     final a = (int.parse(amount)) * 100;
     return a.toString();
   }
+
+
+/// Stripe Subscription Function =====>>>>
+//  String publishableKey = "your_publishable_key";
+//   PaymentMethod paymentMethod = PaymentMethod(id: '', livemode: null, paymentMethodType: '');
+//   Customer customer = Customer();
+
+//   StripeProvider() {
+//     StripePayment.setOptions(
+//       StripeOptions(
+//         publishableKey: publishableKey,
+//         androidPayMode: 'test', // 'test' or 'production'
+//       ),
+//     );
+//   }
+
+//   Future<void> createTokenWithCard() async {
+//     try {
+//       paymentMethod = await StripePayment.createPaymentMethod(
+//         PaymentMethodRequest(
+//           card: CreditCard(
+//             number: '4242424242424242',
+//             expMonth: 12,
+//             expYear: 25,
+//             cvc: '123',
+//           ),
+//         ),
+//       );
+//       notifyListeners();
+//     } catch (error) {
+//       print('Error creating payment method: $error');
+//     }
+//   }
+
+//   Future<void> createCustomer() async {
+//     try {
+//       customer = await StripePayment.createCustomer(
+//         PaymentMethodRequest(
+//           card: CreditCard(
+//             number: '4242424242424242',
+//             expMonth: 12,
+//             expYear: 25,
+//             cvc: '123',
+//           ),
+//         ),
+//       );
+//       notifyListeners();
+//     } catch (error) {
+//       print('Error creating customer: $error');
+//     }
+//   }
+
+//   Future<void> createSubscription() async {
+//     try {
+//       await StripePayment.createSubscription(
+//         PaymentMethodRequest(
+//           customerId: customer.id,
+//           paymentMethodId: paymentMethod.id,
+//         ),
+//       );
+//       print('Subscription successful!');
+//     } catch (error) {
+//       print('Error creating subscription: $error');
+//     }
+//   }
 
 }

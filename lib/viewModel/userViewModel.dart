@@ -26,7 +26,7 @@ class UserViewModel with ChangeNotifier {
    Future getImages() async {
   final picker = ImagePicker();
     final pickedFile =
-        await picker.pickImage(source: ImageSource.gallery);
+        await picker.pickImage(source: ImageSource.gallery, );
 
     if (pickedFile != null) {
       _image = File(pickedFile.path);
@@ -106,6 +106,7 @@ getemail=email;
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.audio,
       allowMultiple: false,
+      
     );
 
     if (result != null && result.files.isNotEmpty) {
@@ -140,5 +141,33 @@ data=getdata;
 url=geturl;
 
  }
- 
+ //
+ final AudioPlayer audioPlayer = AudioPlayer();
+   bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+  audioPlayerProvider() {
+    setAudio();
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      isPlaying = state == PlayerState.playing;
+      notifyListeners();
+    });
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      duration = newDuration;
+      notifyListeners();
+    });
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      position = newPosition;
+      notifyListeners();
+    });
+  }
+
+  Future<void> setAudio() async {
+    await audioPlayer.setReleaseMode(ReleaseMode.stop);
+  }
+
+  Future<void> playAudioFromUrl(String playAudioUrl) async {
+    await audioPlayer.play(UrlSource(playAudioUrl));
+  }
 }
