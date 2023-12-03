@@ -11,6 +11,7 @@ import 'package:voice_maker/view/authView/splashScreen.dart';
 import 'package:voice_maker/viewModel/authViewModel.dart';
 import 'package:voice_maker/viewModel/homeViewModel.dart';
 import 'package:voice_maker/viewModel/paginationViewModel.dart';
+import 'package:voice_maker/viewModel/services/playerProvider.dart';
 import 'package:voice_maker/viewModel/userViewModel.dart';
 import 'package:voice_maker/viewModel/userViewModel2.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => PaginationViewModel(),
         ),
+        ChangeNotifierProvider(create: (context) => AudioPlayerProvider(), )
       ],
       child: MaterialApp(
         title: 'Voice Marker',

@@ -79,14 +79,17 @@ class GradientButton extends StatelessWidget {
   var borderRadius;
   var height, width;
   VoidCallback? onPressed;
+ Color? disabledBackgroundColor;
 
   GradientButton(
       {required this.child,
       this.loading,
+      this.disabledBackgroundColor,
       this.width = double.infinity,
       required this.onPressed,
       this.height = 60.0,
       this.buttonbgColor = Colors.transparent,
+
       this.borderRadius = 10.0,
       this.gradientColors =
           const LinearGradient(colors: [Color(0xff9B22C5), Color(0xff6929D1)]),
@@ -102,11 +105,14 @@ class GradientButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         onPressed: onPressed,
+        
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+        
           backgroundColor:
               buttonbgColor, // Make the button background transparent
           elevation: 0, // No elevation
+          disabledBackgroundColor: Colors.grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),

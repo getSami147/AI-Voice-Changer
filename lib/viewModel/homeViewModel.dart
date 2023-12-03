@@ -217,7 +217,7 @@ class HomeViewModel with ChangeNotifier {
 //   }
   ///
   Stream<http.Response> StreemGetCommunity(context) async* {
-    while (true) {
+    // while (true) {
       try {
       var provider = Provider.of<UserViewModel>(context, listen: false);
       var headers = {'Authorization': 'Bearer ${provider.logintoken}'};
@@ -241,7 +241,7 @@ throw FatchDataExceptions("Please check your internet connection");
 throw InternetException("");
 
     }
-    }
+    // }
   }
 
   // <<< Post API's..........................>>> //

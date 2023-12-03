@@ -5,7 +5,7 @@ import 'package:voice_maker/res/appUrl.dart';
 import 'package:voice_maker/viewModel/userViewModel.dart';
 
 class AuthRepository {
-  BaseApiServices apiServices = NetworkApiServices();
+  NetworkApiServices apiServices = NetworkApiServices();
 
 // Get APIs........................................................>>
   // getMe API...........

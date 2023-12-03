@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
+import 'package:voice_maker/assetAudioPlayer.dart';
 import 'package:voice_maker/utils/Colors.dart';
 import 'package:voice_maker/utils/Constant.dart';
 import 'package:voice_maker/utils/Images.dart';
@@ -26,9 +27,10 @@ class _communityGeneratedPostState extends State<communityGeneratedPost> {
   final messegeController = TextEditingController();
   final messegeFocusNode = FocusNode();
   AudioPlayer audioPlayer = AudioPlayer();
-
   @override
   Widget build(BuildContext context) {
+var size= MediaQuery.sizeOf(context);
+
     // var time = DateTime.now().toString();
     return Dialog(
       backgroundColor: whiteColor,
@@ -36,7 +38,7 @@ class _communityGeneratedPostState extends State<communityGeneratedPost> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: SizedBox(
         child: Container(
-          height: 480,
+          height: size.height*.62,
           decoration: BoxDecoration(
               color: Colors.white, borderRadius: BorderRadius.circular(20)),
           child: Stack(
@@ -50,7 +52,7 @@ class _communityGeneratedPostState extends State<communityGeneratedPost> {
                       googleFonts: GoogleFonts.lato(
                         fontWeight: FontWeight.w500,
                         fontSize: textSizeNormal,
-                      )),
+                      )).paddingTop(spacing_twinty),
                   text(
                       "Join the discussion and share your thoughts on our latest community initiative! Your voice matters",
                       googleFonts: GoogleFonts.lato(
@@ -58,6 +60,13 @@ class _communityGeneratedPostState extends State<communityGeneratedPost> {
                         color: blackColor.withOpacity(0.4),
                       ),
                       maxLine: 5),
+
+                      AssetAudioPlayer(
+                         audioUrl: widget.generateURl .toString(),
+                          imageUrl: "",
+                          name: 'Sami Ullah',
+                          appName: 'AI Voice Changer', 
+                        ).paddingTop(spacing_twinty),
                   text(
                     "Post Details",
                     googleFonts: GoogleFonts.lato(

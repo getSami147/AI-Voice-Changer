@@ -4,192 +4,155 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:voice_maker/utils/colors.dart';
+// import 'package:voice_maker/utils/colors.dart';
 
 class AssetAudioPlayer extends StatefulWidget {
   var audioUrl;
   var imageUrl;
   var name;
   var appName;
-  
-  AssetAudioPlayer({required this.audioUrl,this.imageUrl,this.name, this.appName, super.key});
+
+  AssetAudioPlayer({required this.audioUrl, this.imageUrl, this.name, this.appName, super.key});
+
   @override
   _AssetAudioPlayerState createState() => _AssetAudioPlayerState();
 }
 
 class _AssetAudioPlayerState extends State<AssetAudioPlayer> {
-  late AssetsAudioPlayer _assetsAudioPlayer;
-  final List<StreamSubscription> _subscriptions = [];
- 
+  late AssetsAudioPlayer assetsAudioPlayer;
+  final List<StreamSubscription> subscriptions = [];
 
   @override
   void initState() {
     super.initState();
-    _assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
-    // _subscriptions.add(_assetsAudioPlayer.playlistAudioFinished.listen((data) {
-    //   print('playlistAudioFinished : $data');
-    // }));
-    // _subscriptions.add(_assetsAudioPlayer.audioSessionId.listen((sessionId) {
-    //   return openPlayer();
-    //   // print('audioSessionId : $sessionId');
-    // }));
-
+    assetsAudioPlayer = AssetsAudioPlayer.newPlayer();
     openPlayer();
-    
   }
 
   void openPlayer() async {
-    await _assetsAudioPlayer.open(
-    Audio.network(widget.audioUrl,
-      metas: Metas(
-        id: widget.audioUrl,
-        title: widget.appName,
-        artist: widget.name,
-        image:  MetasImage.network(
-          widget.imageUrl,
-        ),)
-    ),
-  
+    await assetsAudioPlayer.open(
+      Audio.network(
+        widget.audioUrl,
+        metas: Metas(
+          id: widget.audioUrl,
+          title: widget.appName,
+          artist: widget.name,
+          image: MetasImage.network(
+            widget.imageUrl,
+          ),
+        ),
+      ),
       showNotification: true,
-       autoStart: false,
-       
-    
+      autoStart: false,
+      
     );
+
+    // Subscribe to the playlistAudioFinished event
+    // subscriptions.add(assetsAudioPlayer.playlistAudioFinished.listen((Playing playing) {
+    //   // Handle the event, e.g., activate something
+  
+    // }));
   }
 
-  // @override
-  // void dispose() {
-  //   _assetsAudioPlayer.dispose();
-  //   print('dispose');
-  //   super.dispose();
-  // }
-
-  Audio find(List<Audio> source, String fromPath) {
-    return source.firstWhere((element) => element.path == fromPath);
+  void activate() {
+    assetsAudioPlayer.stop();
+    // Implement the activation logic here
+    print('Activated!');
+    return openPlayer();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(vertical: 8,horizontal: 5),
-      decoration: BoxDecoration(color: const Color(0xFFE8E8EE),
-      borderRadius: BorderRadius.only(
-        bottomLeft:radiusCircular(10),
-        topLeft:radiusCircular(10),
-        topRight:radiusCircular(10),
-        )
+    return assetsAudioPlayer.builderCurrent(
+      builder: (context, Playing? playing) {
+        return Container(
+            alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE8E8EE),
+        borderRadius: BorderRadius.only(
+          bottomLeft: radiusCircular(10),
+          topLeft: radiusCircular(10),
+          topRight: radiusCircular(10),
+        ),
       ),
-      child: _assetsAudioPlayer.builderCurrent(
-        builder: (context, Playing? playing) {
-          return Row(mainAxisAlignment: MainAxisAlignment.start,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               PlayerBuilder.isPlaying(
-                player: _assetsAudioPlayer,
+                player: assetsAudioPlayer,
                 builder: (context, isPlaying) {
                   return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 5,right: 5),
-          child: InkWell(
-            onTap: () {
-              _assetsAudioPlayer.playOrPause();
-            },
-            child: Container(
-              padding: const EdgeInsets.all(5),
-              decoration:  const BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  colorPrimaryS,
-                  colorPrimary,
-                ]),
-                shape: BoxShape.circle
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5, right: 5),
+                        child: InkWell(
+                          onTap: () {
+                            assetsAudioPlayer.playOrPause();
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                colorPrimaryS,
+                                colorPrimary
+                              ]),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              isPlaying ? Icons.pause : Icons.play_arrow,
+                              size: 25,
+                              color: whiteColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-              child: Icon(
-                isPlaying
-                    ?Icons.pause
-                    :Icons.play_arrow,
-                size: 25,
-                color: whiteColor,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );          
-                  //  PlayingControls(
-                  //   isPlaying: isPlaying,
-                  //   // onStop: () {
-                  //   //   _assetsAudioPlayer.stop();
-                  //   // },
-                  //   onPlay: () {
-                  //     _assetsAudioPlayer.playOrPause();
-                  //   },
-                  // );
-     },),      
               Expanded(
-                child: _assetsAudioPlayer.builderRealtimePlayingInfos(
+                child: assetsAudioPlayer.builderRealtimePlayingInfos(
                   builder: (context, RealtimePlayingInfos? infos) {
-
                     if (infos == null) {
                       return CircularProgressIndicator();
-                      }else{
-                        return PositionSeekWidget(
-
-                      currentPosition: infos.currentPosition,
-                      duration: infos.duration,
-                      seekTo: (to) {
-                        _assetsAudioPlayer.seek(to);
-                      },
-                    );
-                      }
-                   
+                    } else {
+                      return PositionSeekWidget(
+                        currentPosition: infos.currentPosition,
+                        duration: infos.duration,
+                        seekTo: (to) {
+                          assetsAudioPlayer.seek(to);
+                        },
+                      );
+                    }
                   },
                 ),
               ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
-      
+  }
+
+  @override
+  void dispose() {
+    // Dispose of subscriptions
+    subscriptions.forEach((subscription) => subscription.cancel());
+    print('dispose');
+    super.dispose();
   }
 }
-
-// class PlayingControls extends StatelessWidget {
-//   final bool isPlaying;
-//   // final LoopMode? loopMode;
-//   // final bool isPlaylist;
-//   // final Function()? onPrevious;
-//   final Function() onPlay;
-//   // final Function()? onNext;
-//   // final Function()? toggleLoop;
-//   // final Function()? onStop;
-
-//   PlayingControls({
-//     required this.isPlaying,
-//     // this.isPlaylist = false,
-//     // this.loopMode,
-//     // this.toggleLoop,
-//     // this.onPrevious,
-//     required this.onPlay,
-//     // this.onNext,
-//     // this.onStop,
-//   });
-
-//   // @override
-//   // Widget build(BuildContext context) {
-//   //   return 
-    
-//   // }
-// }
 
 class PositionSeekWidget extends StatefulWidget {
   final Duration currentPosition;
   final Duration duration;
   final Function(Duration) seekTo;
 
-  const PositionSeekWidget({super.key, 
+  const PositionSeekWidget({
+    super.key,
     required this.currentPosition,
     required this.duration,
     required this.seekTo,
@@ -202,9 +165,8 @@ class PositionSeekWidget extends StatefulWidget {
 class _PositionSeekWidgetState extends State<PositionSeekWidget> {
   late Duration _visibleValue;
   bool listenOnlyUserInterraction = false;
-  double get percent => widget.duration.inMilliseconds == 0
-      ? 0
-      : _visibleValue.inMilliseconds / widget.duration.inMilliseconds;
+  double get percent =>
+      widget.duration.inMilliseconds == 0 ? 0 : _visibleValue.inMilliseconds / widget.duration.inMilliseconds;
 
   @override
   void initState() {
@@ -215,9 +177,9 @@ class _PositionSeekWidgetState extends State<PositionSeekWidget> {
   @override
   void didUpdateWidget(PositionSeekWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // if (!listenOnlyUserInterraction) {
-    //   _visibleValue = widget.currentPosition;
-    // }
+    if (!listenOnlyUserInterraction) {
+      _visibleValue = widget.currentPosition;
+    }
   }
 
   @override
@@ -234,7 +196,7 @@ class _PositionSeekWidgetState extends State<PositionSeekWidget> {
           max: widget.duration.inMilliseconds.toDouble(),
           value: percent * widget.duration.inMilliseconds.toDouble(),
           activeColor: colorPrimary,
-          inactiveColor: colorPrimaryS.withOpacity(.3),
+          inactiveColor: colorPrimary.withOpacity(.3),
           onChangeEnd: (newValue) {
             setState(() {
               listenOnlyUserInterraction = false;
@@ -268,9 +230,7 @@ String durationToString(Duration duration) {
     return '0$n';
   }
 
-  final twoDigitMinutes =
-      twoDigits(duration.inMinutes.remainder(Duration.minutesPerHour));
-  final twoDigitSeconds =
-      twoDigits(duration.inSeconds.remainder(Duration.secondsPerMinute));
+  final twoDigitMinutes = twoDigits(duration.inMinutes.remainder(Duration.minutesPerHour));
+  final twoDigitSeconds = twoDigits(duration.inSeconds.remainder(Duration.secondsPerMinute));
   return '$twoDigitMinutes:$twoDigitSeconds';
 }

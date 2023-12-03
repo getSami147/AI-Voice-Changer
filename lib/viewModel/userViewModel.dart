@@ -12,25 +12,23 @@ import 'package:voice_maker/res/appUrl.dart';
 import 'package:voice_maker/utils/widget.dart';
 import 'package:voice_maker/view/authView/logIn.dart';
 import 'package:voice_maker/view/screens/dashboard.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
 import 'package:voice_maker/viewModel/homeViewModel.dart';
 
-
 class UserViewModel with ChangeNotifier {
- 
-
 // Image Picker Profile..................................
- File? _image;
- File? get image=>_image;
+  File? _image;
+  File? get image => _image;
 
-   Future getImages() async {
-  final picker = ImagePicker();
-    final pickedFile =
-        await picker.pickImage(source: ImageSource.gallery, );
+  Future getImages() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
 
     if (pickedFile != null) {
       _image = File(pickedFile.path);
-     notifyListeners();
+      notifyListeners();
     } else {
       utils().toastMethod("'images not picked");
       // print('images not picked');
@@ -42,28 +40,28 @@ class UserViewModel with ChangeNotifier {
     sp.setString("saveName", name);
     sp.setString("saveEmail", email);
   }
+
   var getname;
   var getemail;
- void getuserProfile(name,email){
-getname=name;
-getemail=email;
+  void getuserProfile(name, email) {
+    getname = name;
+    getemail = email;
   }
 
-   void getUserData() async {
+  void getUserData() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
-   getname= sp.getString("saveName");
-   getemail= sp.getString("saveEmail");
+    getname = sp.getString("saveName");
+    getemail = sp.getString("saveEmail");
   }
 
   // Like Button.......................>>
-   var isLike =false;
+  var isLike = false;
   // bool get isLiked => _isLiked;
 
   void toggleLike() {
     isLike = !isLike;
     print(isLike);
     notifyListeners();
-    
   }
 
   // remove share Prefence data.......................>>
@@ -80,12 +78,31 @@ getemail=email;
   String? get refreshtoken => _refreshtoken;
   String? get userId => _userId;
 
+  var subscriptionId;
+  var customerId;
+  var priceId;
+
   void getUserTokens() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
     _logintoken = sp.getString("accessToken");
     _refreshtoken = sp.getString("refreshToken");
     _userId = sp.getString("userId");
-    
+    notifyListeners();
+  }
+
+  void getMysubscriptionDetails() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    subscriptionId = sp.getString("subscriptionId");
+    customerId = sp.getString("customerId");
+    priceId = sp.getString("priceId");
+    notifyListeners();
+  }
+
+  void removeMysubscriptionDetails() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.remove("subscriptionId");
+    sp.remove("customerId");
+    sp.remove("priceId");
   }
 
   // isCheack Login ..........................................................>>>
@@ -98,23 +115,23 @@ getemail=email;
         ? const LoginScreen().launch(context)
         : const Dashboard().launch(context);
     notifyListeners();
-    
   }
-    // Audio Picker for Community Post Screen..................................
+
+  // Audio Picker for Community Post Screen..................................
   var pathfile;
   void audiopicker() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.audio,
       allowMultiple: false,
-      
     );
 
     if (result != null && result.files.isNotEmpty) {
-        pathfile = result.files.first.path!;
-        utils().toastMethod("Audio File Picked");
-        notifyListeners();
+      pathfile = result.files.first.path!;
+      utils().toastMethod("Audio File Picked");
+      notifyListeners();
     }
   }
+
   // Audio Picker for Generated Screen..................................
   var filePath;
   void pickAudio() async {
@@ -124,26 +141,27 @@ getemail=email;
     );
 
     if (result != null && result.files.isNotEmpty) {
-        filePath = result.files.first.path!;
-        utils().toastMethod("Audio File Picked");
-        notifyListeners();
+      filePath = result.files.first.path!;
+      utils().toastMethod("Audio File Picked");
+      notifyListeners();
     }
   }
+
   var communityId;
- void getCommunityId(id){
-communityId=id;
+  void getCommunityId(id) {
+    communityId = id;
   }
 
-Map<String, String>? data;
-var url;
- getGeneratedAudioData(Map<String, String>? getdata,geturl){
-data=getdata;
-url=geturl;
+  Map<String, String>? data;
+  var url;
+  getGeneratedAudioData(Map<String, String>? getdata, geturl) {
+    data = getdata;
+    url = geturl;
+  }
 
- }
- //
- final AudioPlayer audioPlayer = AudioPlayer();
-   bool isPlaying = false;
+  //
+  final AudioPlayer audioPlayer = AudioPlayer();
+  bool isPlaying = false;
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 

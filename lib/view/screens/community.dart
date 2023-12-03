@@ -65,6 +65,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
     var provider2 = Provider.of<UserViewModel>(context, listen: false);
     provider2.audioPlayerProvider();
     provider2.setAudio();
+    
   }
 
   Future<void> download(String url) async {
@@ -95,6 +96,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
   Widget build(BuildContext context) {
     var provider = Provider.of<UserViewModel2>(context, listen: false);
     var provider2 = Provider.of<UserViewModel>(context, listen: false);
+
     //  final homeViewprovider = Provider.of<HomeViewModel>(context,listen: false);
 
     // return  Scaffold(

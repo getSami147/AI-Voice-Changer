@@ -24,7 +24,6 @@ class LineChartClass extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // print(maxVal!/2);
     return LineChart(
       sampleData1,
       duration: const Duration(milliseconds: 250),

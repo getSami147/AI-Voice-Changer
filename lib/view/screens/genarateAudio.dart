@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:voice_maker/assetAudioPlayer.dart';
 import 'package:voice_maker/utils/Colors.dart';
 import 'package:voice_maker/utils/Images.dart';
 import 'package:voice_maker/utils/widget.dart';
@@ -98,31 +99,12 @@ Future<void> download(String url) async {
                           fontSize: textSizeSMedium,
                           fontWeight: FontWeight.w500),
                     ).paddingTop(spacing_control_half),
-                    // VoiceMessage(
-                    //   // audioSrc:"https://download.samplelib.com/mp3/sample-3s.mp3",
-                    //   played: false, // To show played badge or not.
-                    //   me: true, // Set message side.
-                    //   noiseWidth: double.infinity,
-                    //   width: double.infinity,
-                    //   meBgColor: black.withOpacity(.05),
-                    //   meFgColor: colorPrimary,
-                    //   mePlayIconColor: whiteColor,
-                    //   waveColor: colorPrimary,
-                    //   waveBgColor: redColor,
-                    //   duration: const Duration(minutes: 1),
-                    //   showDuration: true,
-                    //   noiseCount: 30,
-                    //   noiseHeight: 20,
-                    //   waveForm: [20, 20, 20],
-                    //   contactPlayIconBgColor: colorPrimary,
-                    //   contactPlayIconColor: redColor,
-                    //   onPlay: () {
-                    //     playAudioFromUrl(provider.url.toString());
-                    //   },
-                    //   header: const {
-                        
-                    //   }, 
-                    // ).paddingTop(spacing_thirty),
+                      AssetAudioPlayer(
+                         audioUrl:  provider.url.toString(),
+                          imageUrl: "",
+                          name: 'Sami Ullah',
+                          appName: 'AI Voice Changer', 
+                        ).paddingTop(spacing_twinty),
                     Row(
                       children: [
                         Expanded(

@@ -183,7 +183,7 @@ http.StreamedResponse response = await request.send();
 
 if (response.statusCode == 200) {
  utils().flushBar(context, "Profile Uploaded");
- Account().launch(context,isNewTask: true);
+ const Dashboard().launch(context,isNewTask: true);
 }
 else {
 

@@ -5,7 +5,9 @@ import 'package:http/http.dart' as http;
 
 enum ApiServiceMethodType {
   get,
-  post,
+  post, 
+  delete,
+ 
 }
 
 const baseUrl = 'https://api.stripe.com/v1';
@@ -41,17 +43,38 @@ Future<Map<String, dynamic>?> apiService({
   // ++++++++++++++++++
   // ++ POST REQUEST ++
   // ++++++++++++++++++
-
+if (requestMethod == ApiServiceMethodType.post) {
   try {
     final requestResponse = await http.post(
       Uri.parse(requestUrl),
       headers: requestHeaders,
       body: requestBody,
     );
-
-    return json.decode(requestResponse.body);
+  var data=json.decode(requestResponse.body);
+   print("postResponse: ${data}");
+    return data;
+  } catch (err) {
+    debugPrint("Error: $err");
+  }
+}
+  // ++++++++++++++++++
+  // ++ Delete REQUEST ++
+  // ++++++++++++++++++
+if (requestMethod == ApiServiceMethodType.delete) {
+   try {
+    final requestResponse = await http.delete(
+      Uri.parse(requestUrl),
+      headers: requestHeaders,
+      body: requestBody,
+    );
+  var data=json.decode(requestResponse.body);
+   print("postResponse: ${data}");
+    return data;
   } catch (err) {
     debugPrint("Error: $err");
   }
   return null;
+
+  
+}
 }
