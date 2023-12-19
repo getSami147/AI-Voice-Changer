@@ -335,6 +335,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
           } else {
             var response = jsonDecode(snapshot.data!.body);
             return ListView.builder(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 physics:
                     const BouncingScrollPhysics(parent: PageScrollPhysics()),
                 itemCount: response["data"].length,
@@ -387,68 +388,63 @@ class _CommunityScreenState extends State<CommunityScreen> {
                           ),
                         ),
                         
-                        Container(
-                          alignment: Alignment.center,
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: radiusCircular(10),
-                              topLeft: radiusCircular(10),
-                              topRight: radiusCircular(10),
-                            ),
-                            color: const Color(0xFFE8E8EE),
-                          ),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () async {
-                                  if (provider2.isPlaying) {
-                                    await provider2.audioPlayer.pause();
-                                  } else {
-
-                                    provider2.audioPlayer.play(
-                                        UrlSource(data["audioURL"].toString()));
-                                    provider2.isPlaying = true;
-                                  }
-                                },
-                                child: CircleAvatar(
-                                  backgroundColor: colorPrimary,
-                                  child: Icon(
-                                    provider2.isPlaying
-                                        ? Icons.pause
-                                        : Icons.play_arrow,
-                                    size: 30,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              Slider(
-                                activeColor: colorPrimary,
-                                inactiveColor: colorPrimaryS.withOpacity(.3),
-                                  min: 0,
-                                  max: provider2.duration.inSeconds.toDouble(),
-                                  value:
-                                      provider2.position.inSeconds.toDouble(),
-                                  onChanged: (value) async {
-                                    final position =
-                                        Duration(seconds: value.toInt());
-                                    await provider2.audioPlayer.seek(position);
-                                    await provider2.audioPlayer.resume();
-                                  }),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(formatTime(provider2.position)),
-                                  Text(formatTime(
-                                      provider2.duration - provider2.position))
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-
+                      //  Consumer<UserViewModel>(
+                      //    builder: (BuildContext context, val, Widget? child)=>
+                      //     Container(
+                      //      alignment: Alignment.center,
+                      //      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      //      decoration: const BoxDecoration(
+                      //        borderRadius: BorderRadius.only(
+                      //          bottomLeft: Radius.circular(10),
+                      //          topLeft: Radius.circular(10),
+                      //          topRight: Radius.circular(10),
+                      //        ),
+                      //        color: Color(0xFFE8E8EE),
+                      //      ),
+                      //      child: Row(
+                      //        children: [
+                      //          InkWell(
+                      //            onTap: () async {
+                      //              if (val.isPlaying) {
+                      //                await val.audioPlayer.pause();
+                      //              } else {
+                      //                val.audioPlayer.play(UrlSource(data["audioURL"].toString()));
+                      //                val.isPlaying = true;
+                      //              }
+                      //            },
+                      //            child: CircleAvatar(
+                      //              backgroundColor: colorPrimary,
+                      //              child: Icon(
+                      //                val.isPlaying ? Icons.pause : Icons.play_arrow,
+                      //                size: 30,
+                      //                color: Colors.white,
+                      //              ),
+                      //            ),
+                      //          ),
+                      //          Slider(
+                      //            activeColor: colorPrimary,
+                      //            inactiveColor: colorPrimaryS.withOpacity(.3),
+                      //            min: 0,
+                      //            max: val.duration.inSeconds.toDouble(),
+                      //            value: val.position.inSeconds.toDouble(),
+                      //            onChanged: (value) async {
+                      //              final position = Duration(seconds: value.toInt());
+                      //              await val.audioPlayer.seek(position);
+                      //              await val.audioPlayer.resume();
+                      //            },
+                      //          ),
+                      //          Row(
+                      //            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //            children: [
+                      //              Text(formatTime(val.position)),
+                      //              Text(formatTime(val.duration - val.position)),
+                      //            ],
+                      //          ),
+                      //        ],
+                      //      ),
+                      //    ),
+                      //  ),
+                       
                         text(
                           data["communityDescription"].toString(),
                           maxLine: 5,
@@ -582,15 +578,26 @@ class _CommunityScreenState extends State<CommunityScreen> {
       ).paddingSymmetric(horizontal: spacing_twinty),
     );
   }
-
-  String formatTime(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
-    return [if (duration.inMinutes > 0) minutes, seconds].join(':');
+String formatTime(Duration duration) {
+  String twoDigits(int n) {
+    if (n >= 10) return '$n';
+    return '0$n';
   }
+
+  final twoDigitMinutes = twoDigits(duration.inMinutes.remainder(Duration.secondsPerMinute));
+  final twoDigitSeconds = twoDigits(duration.inSeconds.remainder(Duration.secondsPerMinute));
+  
+  return '$twoDigitMinutes:$twoDigitSeconds';
 }
+  // String formatTime(Duration duration) {
+  //   String twoDigits(int n) => n.toString().padLeft(0, '0');
+
+  //   final minutes = twoDigits(duration.inMinutes.remainder(60));
+  //   final seconds = twoDigits(duration.inSeconds.remainder(60));
+  //   return [if (duration.inMinutes >= 0) seconds, minutes].join(':');
+  // }
+}
+
 
 // Widget buildProgressIndicator() {
 //   return Padding(

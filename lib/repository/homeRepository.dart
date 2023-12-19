@@ -164,7 +164,7 @@ class HomeRepository {
     var provider=Provider.of<UserViewModel>(context,listen: false);
     var headers = {'Authorization': 'Bearer ${provider.logintoken}'};
     try {
-      dynamic response = await apiServices.getApi(AppUrls.urlsubscriptiontype, headers);
+      dynamic response = await apiServices.getApi(AppUrls.urlsubscriptiontype, headers,);
       return response;
     } catch (e) {
       throw e.toString();
@@ -181,19 +181,17 @@ class HomeRepository {
       throw e.toString();
     }
   }
-     //get SubTypeGetAll( My Payments)...........
-  Future<dynamic>subTypeGetAll (context) async {
-    var provider=Provider.of<UserViewModel>(context,listen: false);
-    var headers = {'Authorization': 'Bearer ${provider.logintoken}'};
-    try {
-      dynamic response = await apiServices.getApi(AppUrls.urlsubscriptiontype, headers,);
-      return response;
-    } catch (e) {
-      throw e.toString();
-    }
-  }
-
-
+  //    //get SubTypeGetAll( My Payments)...........
+  // Future<dynamic>subTypeGetAll (context) async {
+  //   var provider=Provider.of<UserViewModel>(context,listen: false);
+  //   var headers = {'Authorization': 'Bearer ${provider.logintoken}'};
+  //   try {
+  //     dynamic response = await apiServices.getApi(AppUrls.urlsubscriptiontype, headers,);
+  //     return response;
+  //   } catch (e) {
+  //     throw e.toString();
+  //   }
+  // }
 
                  // <<< Post API's..........................>>> //
     // contect us API...........
@@ -214,6 +212,16 @@ class HomeRepository {
       throw e.toString();
     }
   } 
+    // createSubscriton API...........
+  Future<dynamic> createSubscritonAPI(dynamic data,Map<String, String> headers) async {
+    try {
+      dynamic response = await apiServices.postApi(data,AppUrls.urlCreatesubscription, headers);
+      return response;
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+  
  // shareTo CommunityPost...........
   Future<dynamic> shareToCommunityPost(dynamic data,Map<String, String> headers) async {
     try {
@@ -264,6 +272,8 @@ class HomeRepository {
   //     throw e.toString();
   //   }
   // }
+
+  
  // Update Me API //...................................................>>>
    // Update Me Profile.................................................>>
   Future<dynamic> updateCommentApi(dynamic data,String id,context) async {
@@ -278,6 +288,20 @@ class HomeRepository {
       rethrow;
     }
   }
+
+   // UpdateSubscription.................................................>>
+  Future<dynamic> updateSubscription(dynamic data,String id,context) async {
+        var provider=Provider.of<UserViewModel>(context,listen: false);
+        var headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer ${provider.logintoken}'};
+    try {
+      dynamic response = await apiServices.updateApi(data, AppUrls.urlUpdatesubscription+id, headers);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
   // Delete APIs //.......................................................>>>
   // Delete Me api......................................................>>>
   Future<dynamic> deleteCommentApi(String id,context) async {
@@ -287,6 +311,20 @@ class HomeRepository {
 };
     try {
       dynamic response = await apiServices.deleteApi(AppUrls.urlCommentDelete+id, headers);
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+   // Delete Me api......................................................>>>
+  Future<dynamic> cancelSubscriptionAPI(String id,context) async {
+    var provider=Provider.of<UserViewModel>(context,listen: false);
+    var headers = {
+  'Authorization': 'Bearer ${provider.logintoken}'
+};
+    try {
+      dynamic response = await apiServices.deleteApi(AppUrls.urlCanclesubscription+id, headers);
       return response;
     } catch (e) {
       rethrow;

@@ -1,17 +1,19 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
 import 'package:voice_maker/utils/widget.dart';
+import 'package:voice_maker/viewModel/homeViewModel.dart';
 import 'package:voice_maker/viewModel/services/StripeApiService.dart';
+import 'package:voice_maker/viewModel/userViewModel.dart';
 
 // +++++++++++++++++++++++++++++++++++
 // ++ STRIPE PAYMENT INITIALIZATION ++
 // +++++++++++++++++++++++++++++++++++
 
-Future<void> init(var price,var priceTempId,var customerName,var customerEmail) async {
+Future<void> init(var price,var priceTempId,var customerName,var customerEmail,subscriptionTypeId,context) async {
 
   Map<String, dynamic> customer = await createCustomer(customerName, customerEmail);
   Map<String, dynamic> paymentIntent = await createPaymentIntent(
@@ -30,11 +32,47 @@ Future<void> init(var price,var priceTempId,var customerName,var customerEmail) 
     priceTempId
   );
   // print("sub: ${subscriptionsResponse}");
- SharedPreferences sp=await SharedPreferences.getInstance();
-  sp.setString("subscriptionId", subscriptionsResponse["id"].toString());
-  sp.setString("customerId", subscriptionsResponse["customer"].toString());
-  sp.setString("priceId", subscriptionsResponse['items']['data'][0]['plan']['id'].toString());
+//  SharedPreferences sp=await SharedPreferences.getInstance();
+ var subscriptionId=subscriptionsResponse["id"].toString();
+ var customerId=subscriptionsResponse["customer"].toString();
+ var priceId=subscriptionsResponse['items']['data'][0]['plan']['id'].toString();
+ var sDate=subscriptionsResponse["current_period_end"];
+ var eDate=subscriptionsResponse["current_period_end"];
+ var amount=subscriptionsResponse["items"]["data"][0]["plan"]["amount"];
+  var provider=Provider.of<UserViewModel>(context,listen: false);
+  //  DateTime now = DateTime.now();
+  // String formattedDateTimeNow = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+// Current date and time
+  // DateTime currentDate = DateTime.now();
+  // // Calculate 3 months later
+  // DateTime endDate = currentDate.add(Duration(days: 90));
 
+
+// Convert timestamps to DateTime objects
+DateTime startDate = DateTime.fromMillisecondsSinceEpoch(sDate * 1000);
+DateTime endDate = DateTime.fromMillisecondsSinceEpoch(eDate * 1000);
+
+// Format DateTime objects as strings
+String formattedStartDate = startDate.toIso8601String();
+String formattedEndDate = endDate.toIso8601String();
+
+// print("formattedEndDate: ${formattedEndDate}");
+var headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Bearer ${provider.logintoken}',
+};
+
+var data = {
+  "userId": provider.userId,
+  "subscriptionType": subscriptionTypeId,
+  "subscriptionStripeId": subscriptionId,
+  "customerId": customerId,
+  "price": amount,
+  "startDate": formattedStartDate,
+  "endDate": formattedEndDate,
+};
+
+HomeViewModel().createSubscritonAPI(data, headers, context);
 }
 
 // +++++++++++++++++++++
@@ -141,7 +179,7 @@ Future<void> upgradeSubscription(
   String newPriceTemplateId,
 ) async {
   // First, cancel the current subscription
-  await cancelSubscription(currentSubscriptionId);
+  await cancelSubscription(currentSubscriptionId, "id", "context");
 
   // Create a new payment intent and credit card
   Map<String, dynamic> paymentIntent = await createPaymentIntent(customerId);
@@ -168,11 +206,14 @@ Future<void> upgradeSubscription(
 // ++ CANCEL SUBSCRIPTION ++
 // +++++++++++++++++++++++++++
 
-Future<void> cancelSubscription(String subscriptionId) async {
+Future<void> cancelSubscription(String subscriptionId,id,context) async {
   await apiService(
     endpoint: 'subscriptions/$subscriptionId',
     requestMethod: ApiServiceMethodType.delete,
-  ).then((value) => utils().toastMethod("Your have parmanty UnSubscribed"));
+  ).then((value) => HomeViewModel().cancelSubscriptionAPI(id, context)
+  );
+
+  // .then((value) => utils().toastMethod("Your current subscription has been permanently unsubscribed."));
 }
 
 

@@ -12,7 +12,6 @@ import 'package:voice_maker/res/appUrl.dart';
 import 'package:voice_maker/utils/widget.dart';
 import 'package:voice_maker/view/screens/dashboard.dart';
 import 'package:http/http.dart' as http;
-import 'package:voice_maker/view/screens/genarateAudio.dart';
 import 'package:voice_maker/models/apiModels.dart';
 import 'package:voice_maker/viewModel/userViewModel.dart';
 import 'package:voice_maker/viewModel/userViewModel2.dart';
@@ -129,10 +128,10 @@ class HomeViewModel with ChangeNotifier {
     return homeRepository.getMysubscription(context);
   }
 
-  // get Mysubscription..............................................................>>
-  Future subTypeGetAll(BuildContext context) async {
-    return homeRepository.subTypeGetAll(context);
-  }
+  // // get Mysubscription..............................................................>>
+  // Future subTypeGetAll(BuildContext context) async {
+  //   return homeRepository.subTypeGetAll(context);
+  // }
 
 // get Comments ..............................................................>>
   bool isloading = false;
@@ -274,6 +273,17 @@ throw InternetException("");
     });
   }
 
+   // createSubscriton API.........................................................>>
+  Future<void> createSubscritonAPI(
+      dynamic data, Map<String, String> headers, BuildContext context) async {
+    await homeRepository.createSubscritonAPI(data, headers).then((value) {
+      print("value Response: ${value}");
+    }).onError((error, stackTrace) {
+      utils().flushBar(context, error.toString());
+      print("error: ${ error.toString()}");
+    });
+  }
+
   // Customize //Generate Voice...............................................
   Future generateVoice(
       context, Map<String, String> data, String audioURl) async {
@@ -350,6 +360,18 @@ throw InternetException("");
     });
   }
 
+    // UpdateSubscription..............................................................>>
+  Future<void> updateSubscription(
+      dynamic data, String id, BuildContext context) async {
+    homeRepository.updateSubscription(data, id, context).then((value) async {
+      // utils().flushBar(context, "Your comment has been Updated");
+    }).onError((error, stackTrace) {
+      print("StripUpdate Error: ${error.toString()}");
+      utils().flushBar(context, error.toString());
+
+    });
+  }
+
   // Delete APIs..............................................................>>
   // DeleteMe..............................................................>>
   Future<void> deleteCommentApi(String id, BuildContext context) async {
@@ -365,196 +387,15 @@ throw InternetException("");
     });
   }
 
+  // cancelSubscription API..............................................................>>
+  Future<void> cancelSubscriptionAPI(String id, BuildContext context) async {
+    homeRepository.cancelSubscriptionAPI(id, context).then((value) async {
+  utils().toastMethod("Your current subscription has been permanently unsubscribed.");
 
-// Map<String, dynamic>? paymentIntentdata;
-
-// Future<void> makePayment() async {
-//   try {
-//     paymentIntentdata = await createPaymentIntent();
-//     var googlePay = const PaymentSheetGooglePay(
-//         merchantCountryCode: "US", currencyCode: "US", testEnv: true,
-        
-//         );
-
-//     await Stripe.instance.initPaymentSheet(
-//       paymentSheetParameters: SetupPaymentSheetParameters(
-//         paymentIntentClientSecret: paymentIntentdata!["client_secret"],
-//         // applePay: PaymentSheetApplePay(merchantCountryCode: "USD",buttonType: PlatformButtonType.pay,),
-//         googlePay: googlePay,
-//         style: ThemeMode.system,
-//         merchantDisplayName: "Sami Ullah",
-        
-//       ),
-//     );
-//     displayPaymentSheet();
-//   } catch (e) {
-//     print('makePayment error: ${e.toString()}');
-//   }
-// }
-
-// displayPaymentSheet() async {
-//   try {
-//     await Stripe.instance.presentPaymentSheet();
-//     print("done");
-//   } catch (e) {
-//     print('displayPS error: ${e.toString()}');
-//     print("failed");
-//   }
-// }
-
-// createPaymentIntent() async {
-//   try {
-//     Map<String, dynamic> body = {
-//       "amount": "10000",
-//       "currency": 'USD',
-//     };
-//     var response = await http.post(
-//       Uri.parse("https://api.stripe.com/v1/payment_intents"),
-//       body: body,
-//       headers: {
-//         'Authorization':
-//             'Bearer sk_test_51LjgmuBd21JmgpA7g0Ws1McFtiufLuhCZawJnJ32rrUIRCPdAiS92iIrSiME8YkpUeE70KPyn81tEmje5CiXhx6J00Ne6SuSby',
-//         'Content-Type': 'application/x-www-form-urlencoded'
-//       },
-//     );
-//     print("response body : ${response.body.toString()}");
-//     return json.decode(response.body.toString());
-//   } catch (e) {
-//     throw Exception('creatIntent error: ${e.toString()}');
-//   }
-// }
-
-/// Stripe Payment Function =====>>>>
- Map<String, dynamic>? paymentIntentData;
-  Future<void> makePayment({required String amount,required String currency,}) async {
-    try {
-      paymentIntentData = await createPaymentIntent(amount, currency);
-      if (paymentIntentData != null) {
-        await Stripe.instance
-            .initPaymentSheet(
-                paymentSheetParameters: SetupPaymentSheetParameters(
-              googlePay: const PaymentSheetGooglePay(
-                  merchantCountryCode: 'US',
-                  testEnv: true,
-                  currencyCode: "gbp"),
-              merchantDisplayName: 'Prospects',
-              customerId: paymentIntentData!['customer'],
-              paymentIntentClientSecret: paymentIntentData!['client_secret'],
-              customerEphemeralKeySecret: paymentIntentData!['ephemeralKey'],
-            ))
-            .then((value) {});
-        displayPaymentSheet();
-      }
-    } catch (e, s) {
-      print('exception:$e$s');
-    }
+    }).onError((error, stackTrace) {
+      print("CancleSubsciption Erorr: ${error.toString()}");
+      utils().flushBar(context, error.toString());
+    });
   }
-
-  displayPaymentSheet() async {
-    try {
-      await Stripe.instance.presentPaymentSheet().then((value) async {});
-    } on Exception catch (e) {
-      if (e is StripeException) {
-        print("Error from Stripe: ${e.error.localizedMessage}");
-      } else {
-        print("Unforeseen error: ${e}");
-      }
-    } catch (e) {
-      print("exception:$e");
-    }
-  }
-
-  //  Future<Map<String, dynamic>>
-  createPaymentIntent(String amount, String currency) async {
-    try {
-      Map<String, dynamic> body = {
-        'amount': calculateAmount(amount),
-        'currency': currency,
-        'payment_method_types[]': 'card'
-      };
-      var response = await http.post(
-          Uri.parse('https://api.stripe.com/v1/payment_intents'),
-          body: body,
-          headers: {
-            'Authorization':
-                'Bearer sk_test_51LjgmuBd21JmgpA7g0Ws1McFtiufLuhCZawJnJ32rrUIRCPdAiS92iIrSiME8YkpUeE70KPyn81tEmje5CiXhx6J00Ne6SuSby',
-            'Content-Type': 'application/x-www-form-urlencoded',
-          });
-      //
-      return jsonDecode(response.body);
-    } catch (err) {
-      print('err charging user: ${err.toString()}');
-    }
-  }
-
-  calculateAmount(String amount) {
-    final a = (int.parse(amount)) * 100;
-    return a.toString();
-  }
-
-
-/// Stripe Subscription Function =====>>>>
-//  String publishableKey = "your_publishable_key";
-//   PaymentMethod paymentMethod = PaymentMethod(id: '', livemode: null, paymentMethodType: '');
-//   Customer customer = Customer();
-
-//   StripeProvider() {
-//     StripePayment.setOptions(
-//       StripeOptions(
-//         publishableKey: publishableKey,
-//         androidPayMode: 'test', // 'test' or 'production'
-//       ),
-//     );
-//   }
-
-//   Future<void> createTokenWithCard() async {
-//     try {
-//       paymentMethod = await StripePayment.createPaymentMethod(
-//         PaymentMethodRequest(
-//           card: CreditCard(
-//             number: '4242424242424242',
-//             expMonth: 12,
-//             expYear: 25,
-//             cvc: '123',
-//           ),
-//         ),
-//       );
-//       notifyListeners();
-//     } catch (error) {
-//       print('Error creating payment method: $error');
-//     }
-//   }
-
-//   Future<void> createCustomer() async {
-//     try {
-//       customer = await StripePayment.createCustomer(
-//         PaymentMethodRequest(
-//           card: CreditCard(
-//             number: '4242424242424242',
-//             expMonth: 12,
-//             expYear: 25,
-//             cvc: '123',
-//           ),
-//         ),
-//       );
-//       notifyListeners();
-//     } catch (error) {
-//       print('Error creating customer: $error');
-//     }
-//   }
-
-//   Future<void> createSubscription() async {
-//     try {
-//       await StripePayment.createSubscription(
-//         PaymentMethodRequest(
-//           customerId: customer.id,
-//           paymentMethodId: paymentMethod.id,
-//         ),
-//       );
-//       print('Subscription successful!');
-//     } catch (error) {
-//       print('Error creating subscription: $error');
-//     }
-//   }
 
 }

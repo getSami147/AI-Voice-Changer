@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:provider/provider.dart';
-import 'package:voice_maker/repository/homeRepository.dart';
 import 'package:voice_maker/utils/Colors.dart';
 import 'package:voice_maker/utils/Constant.dart';
 import 'package:voice_maker/utils/widget.dart';
@@ -16,7 +14,16 @@ class MySubcription extends StatefulWidget {
   State<MySubcription> createState() => _MySubcriptionState();
 }
 
-class _MySubcriptionState extends State<MySubcription> {
+class _MySubcriptionState extends State<MySubcription>
+    with SingleTickerProviderStateMixin {
+  late TabController controller;
+  var index = 0;
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(length: 2, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +34,8 @@ class _MySubcriptionState extends State<MySubcription> {
             finish(context);
           },
         ),
-        body: FutureBuilder(
+        body:
+         FutureBuilder(
             future: HomeViewModel().getmysubscription(context),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -36,29 +44,103 @@ class _MySubcriptionState extends State<MySubcription> {
                 return Center(
                     child: text(snapshot.error.toString(), maxLine: 10));
               } else {
-              return ListView.builder(
-                itemCount: snapshot.data["data"].length,
-                physics:  const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  var data = snapshot.data["data"][index];
-                  return PaymentCard(
-                    onpress: () {},
-                    title:
-                        data["subscriptionType"]["subscriptionType"].toString(),
-                    subtitle: DateFormat("yMMMMEEEEd").format(DateTime.parse(
-                        data["subscriptionType"]["createdAt"].toString())),
-                    trailing:
-                        "\$${data["subscriptionType"]["price"].toString()}",
-                  );
-                },
-              ).paddingSymmetric(horizontal: spacing_twinty);
-            }
-  })
-            );
+                final activeSubscrition = snapshot.data['data']
+                    .where((e) => e['status'] == 'Active')
+                    .toList();
+                final cencledSubscrition = snapshot.data['data']
+                    .where((e) => e['status'] == 'unAcive')
+                    .toList();
+                return Column(
+                  children: [
+                    TabBar(
+                      onTap: (value) {
+                        index = value;
+                      },
+                      unselectedLabelColor: colorPrimary,
+                      labelColor: white,
+                      controller: controller,
+                      indicator: BoxDecoration(
+                        gradient: const LinearGradient(
+                            colors: [colorPrimary, colorPrimaryS]),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      tabs: [
+                        const Tab(text: "Current Plan")
+                            .paddingSymmetric(horizontal: spacing_twinty),
+                        const Tab(text: "Cancelled Plan")
+                            .paddingSymmetric(horizontal: spacing_twinty),
+                      ],
+                    ).paddingSymmetric(vertical: spacing_thirty, horizontal: 0),
+                    Expanded(
+                      child: TabBarView(
+                        physics: const BouncingScrollPhysics(),
+                        controller: controller,
+                        children: [
+                          activeSubscrition.isEmpty
+                              ? Center(
+                                  child: text("You don't have any Subscription",
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              : ListView.builder(
+                                  itemCount: activeSubscrition.length,
+                                  itemBuilder: (context, i) {
+                                    return PaymentCard(
+                                      onpress: () {},
+                                      onpress2: () {},
+                                      title: activeSubscrition[i]
+                                                  ["subscriptionType"]
+                                              ["subscriptionType"]
+                                          .toString(),
+                                      subtitle: DateFormat("yMMMMEEEEd").format(
+                                          DateTime.parse(activeSubscrition[i]
+                                                      ["subscriptionType"]
+                                                  ["createdAt"]
+                                              .toString())),
+                                      trailing:
+                                          "\$${activeSubscrition[i]["subscriptionType"]["price"].toString()}",
+                                    );
+                                  }),
+                          cencledSubscrition.isEmpty
+                              ? Center(
+                                  child: text(
+                                    "No cancelled Subscription available for now",
+                                    fontSize: 14.0,
+                                  ),
+                                )
+                              : ListView.builder(
+                                  itemCount: activeSubscrition.length,
+                                  itemBuilder: (context, i) {
+                                    return SingleChildScrollView(
+                                      child: PaymentCard(
+                                          onpress: () {},
+                                          onpress2: () {},
+                                          title: activeSubscrition[i]
+                                                      ["subscriptionType"]
+                                                  ["subscriptionType"]
+                                              .toString(),
+                                          subtitle: DateFormat("yMMMMEEEEd")
+                                              .format(DateTime.parse(
+                                                  activeSubscrition[i][
+                                                              "subscriptionType"]
+                                                          ["createdAt"]
+                                                      .toString())),
+                                          trailing:
+                                              "\$${activeSubscrition[i]["subscriptionType"]["price"].toString()}"),
+                                    );
+                                  })
+                        ],
+                      ),
+                    ),
+                  ],
+                ).paddingSymmetric(horizontal: spacing_twinty);
+              }
+            }));
+  
   }
 }
 
+// ignore: must_be_immutable
 class PaymentCard extends StatelessWidget {
   VoidCallback? onpress;
   VoidCallback? onpress2;
@@ -96,16 +178,16 @@ class PaymentCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    text(title,
+                    text(title.toString(),
                         fontSize: textSizeSmall,
                         textAllCaps: true,
                         fontWeight: FontWeight.w500),
-                    text(subtitle,
+                    text(subtitle.toString(),
                         fontSize: textSizeSmall, textColor: textGreyColor),
                   ]),
               Row(
                 children: [
-                  text(trailing,
+                  text(trailing.toString(),
                       fontSize: textSizeSmall, fontWeight: FontWeight.w500),
                 ],
               )

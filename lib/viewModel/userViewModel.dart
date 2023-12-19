@@ -6,14 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:voice_maker/res/appUrl.dart';
 import 'package:voice_maker/utils/widget.dart';
 import 'package:voice_maker/view/authView/logIn.dart';
 import 'package:voice_maker/view/screens/dashboard.dart';
-import 'package:http/http.dart' as http;
-import 'package:voice_maker/viewModel/homeViewModel.dart';
 
 class UserViewModel with ChangeNotifier {
 // Image Picker Profile..................................
@@ -78,9 +73,7 @@ class UserViewModel with ChangeNotifier {
   String? get refreshtoken => _refreshtoken;
   String? get userId => _userId;
 
-  var subscriptionId;
-  var customerId;
-  var priceId;
+
 
   void getUserTokens() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();
@@ -90,13 +83,7 @@ class UserViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  void getMysubscriptionDetails() async {
-    final SharedPreferences sp = await SharedPreferences.getInstance();
-    subscriptionId = sp.getString("subscriptionId");
-    customerId = sp.getString("customerId");
-    priceId = sp.getString("priceId");
-    notifyListeners();
-  }
+
 
   void removeMysubscriptionDetails() async {
     final SharedPreferences sp = await SharedPreferences.getInstance();

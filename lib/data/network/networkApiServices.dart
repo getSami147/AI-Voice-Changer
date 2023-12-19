@@ -100,7 +100,7 @@ class NetworkApiServices extends BaseApiServices {
         throw jsonDecode(response.body)["message"].toString();
       default:
         throw FatchDataExceptions(
-            "Please check your internet connection");
+            "Please check your internet connection : ${response.statusCode}");
     }
   }
   

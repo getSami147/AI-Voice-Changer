@@ -1,6 +1,6 @@
 class AppUrls {
   // Base Url....
-  static var baseUrl = "http://18.134.150.58:4019/api/v1/";
+  static var baseUrl = "http://13.40.169.162:4019/api/v1/"; 
 
   // Base Url....
   static var urlLogin = "${baseUrl}userAuth/login";
@@ -18,12 +18,14 @@ class AppUrls {
   static var urlContactUs = "${baseUrl}contact";
   static var urldreemvoice= "${baseUrl}voice";
   static var urlcommentPost = "${baseUrl}comments";
+  static var urlCreatesubscription = "${baseUrl}subscription";
   static var urlFAQ = "${baseUrl}FAQ";
   static var urlCommunityPost = "${baseUrl}community";
   static var urloverview = "${baseUrl}overview";
   static var urlsubscriptiontype = "${baseUrl}subscriptiontype";
   static var urlMysubscription = "${baseUrl}subscription/my";
-  static var urlSubTypeGetall = "${baseUrl}subscriptiontype";
+  static var urlUpdatesubscription = "${baseUrl}subscription";
+  static var urlCanclesubscription = "${baseUrl}subscription";
 
   static var urlSingleBlog = "${baseUrl}blog/";
   static var urlCommunitySingle= "${baseUrl}community/";
