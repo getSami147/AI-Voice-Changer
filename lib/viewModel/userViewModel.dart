@@ -6,9 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/view/authView/logIn.dart';
-import 'package:voice_maker/view/screens/dashboard.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/view/authView/logIn.dart';
+import 'package:voice_changer/view/screens/dashboard.dart';
 
 class UserViewModel with ChangeNotifier {
 // Image Picker Profile..................................

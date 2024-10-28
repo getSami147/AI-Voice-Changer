@@ -4,13 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/utils/Colors.dart';
-import 'package:voice_maker/utils/Constant.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/utils/widget.dart';
+import 'package:voice_changer/utils/Colors.dart';
+import 'package:voice_changer/utils/Constant.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/utils/widget.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:voice_maker/viewModel/UserViewModel.dart';
-import 'package:voice_maker/viewModel/homeViewModel.dart';
+import 'package:voice_changer/viewModel/UserViewModel.dart';
+import 'package:voice_changer/viewModel/homeViewModel.dart';
 
 class communityPost extends StatefulWidget {
   var userId;

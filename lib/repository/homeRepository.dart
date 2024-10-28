@@ -1,10 +1,10 @@
 import 'package:provider/provider.dart';
-import 'package:voice_maker/data/network/baseApiServices.dart';
-import 'package:voice_maker/data/network/networkApiServices.dart';
-import 'package:voice_maker/res/appUrl.dart';
-import 'package:voice_maker/view/screens/communityComment.dart';
-import 'package:voice_maker/view/screens/updateComment.dart';
-import 'package:voice_maker/viewModel/userViewModel.dart';
+import 'package:voice_changer/data/network/baseApiServices.dart';
+import 'package:voice_changer/data/network/networkApiServices.dart';
+import 'package:voice_changer/res/appUrl.dart';
+import 'package:voice_changer/view/screens/communityComment.dart';
+import 'package:voice_changer/view/screens/updateComment.dart';
+import 'package:voice_changer/viewModel/userViewModel.dart';
 
 class HomeRepository {
   NetworkApiServices apiServices = NetworkApiServices();

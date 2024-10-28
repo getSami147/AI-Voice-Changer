@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:voice_maker/utils/Colors.dart';
-import 'package:voice_maker/utils/Constant.dart';
-import 'package:voice_maker/utils/widget.dart';
+import 'package:voice_changer/utils/Colors.dart';
+import 'package:voice_changer/utils/Constant.dart';
+import 'package:voice_changer/utils/widget.dart';
 
 // ignore: must_be_immutable
 class AppbarContainer extends StatelessWidget {

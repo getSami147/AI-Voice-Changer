@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:voice_maker/utils/colors.dart';
-import 'package:voice_maker/viewModel/services/playerProvider.dart';
+import 'package:voice_changer/utils/colors.dart';
+import 'package:voice_changer/viewModel/services/playerProvider.dart';
 class AssetAudioPlayer extends StatefulWidget {
   var audioUrl;
   var imageUrl;

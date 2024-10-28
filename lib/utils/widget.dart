@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:voice_maker/utils/Colors.dart';
+import 'package:voice_changer/utils/Colors.dart';
 import 'Constant.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 

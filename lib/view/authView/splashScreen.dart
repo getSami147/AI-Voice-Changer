@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/view/authView/logIn.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/view/authView/logIn.dart';
 import '../../utils/Colors.dart';
 import '../../viewModel/userViewModel.dart';
 

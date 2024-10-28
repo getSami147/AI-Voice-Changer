@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:voice_maker/utils/Constant.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/view/authView/logIn.dart';
-import 'package:voice_maker/view/components/component.dart';
+import 'package:voice_changer/utils/Constant.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/view/authView/logIn.dart';
+import 'package:voice_changer/view/components/component.dart';
 import '../../utils/string.dart';
 
 class UsageMathod extends StatelessWidget {

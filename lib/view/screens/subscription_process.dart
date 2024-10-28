@@ -4,10 +4,10 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/viewModel/homeViewModel.dart';
-import 'package:voice_maker/viewModel/services/StripeApiService.dart';
-import 'package:voice_maker/viewModel/userViewModel.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/viewModel/homeViewModel.dart';
+import 'package:voice_changer/viewModel/services/StripeApiService.dart';
+import 'package:voice_changer/viewModel/userViewModel.dart';
 
 // +++++++++++++++++++++++++++++++++++
 // ++ STRIPE PAYMENT INITIALIZATION ++

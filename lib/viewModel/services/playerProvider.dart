@@ -4,7 +4,7 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/utils/colors.dart';
+import 'package:voice_changer/utils/colors.dart';
 
 class AudioPlayerProvider extends ChangeNotifier {
   late AssetsAudioPlayer assetsAudioPlayer;

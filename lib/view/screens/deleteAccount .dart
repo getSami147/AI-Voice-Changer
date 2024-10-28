@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:voice_maker/utils/Colors.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/utils/constant.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/viewModel/authViewModel.dart';
-import 'package:voice_maker/viewModel/userViewModel.dart';
+import 'package:voice_changer/utils/Colors.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/utils/constant.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/viewModel/authViewModel.dart';
+import 'package:voice_changer/viewModel/userViewModel.dart';
 
 
 class DeleteAccount extends StatelessWidget {

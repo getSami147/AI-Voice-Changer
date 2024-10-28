@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/utils/Constant.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/utils/colors.dart';
-import 'package:voice_maker/utils/string.dart';
-import 'package:voice_maker/view/sateManagement.dart';
-import 'package:voice_maker/view/screens/Community.dart';
-import 'package:voice_maker/view/screens/blogs.dart';
-import 'package:voice_maker/view/screens/generateScreen.dart';
-import 'package:voice_maker/view/screens/Account.dart';
-import 'package:voice_maker/viewModel/userViewModel.dart';
+import 'package:voice_changer/utils/Constant.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/utils/colors.dart';
+import 'package:voice_changer/utils/string.dart';
+import 'package:voice_changer/view/sateManagement.dart';
+import 'package:voice_changer/view/screens/Community.dart';
+import 'package:voice_changer/view/screens/blogs.dart';
+import 'package:voice_changer/view/screens/generateScreen.dart';
+import 'package:voice_changer/view/screens/Account.dart';
+import 'package:voice_changer/viewModel/userViewModel.dart';
 
 import '../../utils/widget.dart';
 

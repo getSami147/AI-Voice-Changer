@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/utils/colors.dart';
-import 'package:voice_maker/utils/constant.dart';
-import 'package:voice_maker/utils/string.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/view/authView/logIn.dart';
-import 'package:voice_maker/view/screens/subscription_process.dart';
-import 'package:voice_maker/viewModel/homeViewModel.dart';
-import 'package:voice_maker/viewModel/userViewModel.dart';
-import 'package:voice_maker/viewModel/userViewModel2.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/utils/colors.dart';
+import 'package:voice_changer/utils/constant.dart';
+import 'package:voice_changer/utils/string.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/view/authView/logIn.dart';
+import 'package:voice_changer/view/screens/subscription_process.dart';
+import 'package:voice_changer/viewModel/homeViewModel.dart';
+import 'package:voice_changer/viewModel/userViewModel.dart';
+import 'package:voice_changer/viewModel/userViewModel2.dart';
 
 class PricingScreen extends StatefulWidget {
   const PricingScreen({super.key});

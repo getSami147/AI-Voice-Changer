@@ -6,12 +6,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/repository/homeRepository.dart';
-import 'package:voice_maker/utils/Colors.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/view/screens/voiceScreen.dart';
-import 'package:voice_maker/viewModel/homeViewModel.dart';
-import 'package:voice_maker/viewModel/userViewModel2.dart';
+import 'package:voice_changer/repository/homeRepository.dart';
+import 'package:voice_changer/utils/Colors.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/view/screens/voiceScreen.dart';
+import 'package:voice_changer/viewModel/homeViewModel.dart';
+import 'package:voice_changer/viewModel/userViewModel2.dart';
 
 import '../../utils/Constant.dart';
 import '../../utils/string.dart';

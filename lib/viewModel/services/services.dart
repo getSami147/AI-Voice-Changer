@@ -1,10 +1,10 @@
 // import 'package:flutter/foundation.dart';
 // import 'package:flutter/material.dart';
 // import 'package:nb_utils/nb_utils.dart';
-// import 'package:voice_maker/models/userModel.dart';
-// import 'package:voice_maker/view/authView/logIn.dart';
-// import 'package:voice_maker/view/screens/dashboard.dart';
-// import 'package:voice_maker/viewModel/userViewModel.dart';
+// import 'package:voice_changer/models/userModel.dart';
+// import 'package:voice_changer/view/authView/logIn.dart';
+// import 'package:voice_changer/view/screens/dashboard.dart';
+// import 'package:voice_changer/viewModel/userViewModel.dart';
 
 // class SplashSerives {
 //   // Future<Access> getUserData() => UserViewModel().getUser();

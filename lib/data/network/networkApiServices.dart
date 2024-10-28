@@ -2,8 +2,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:voice_maker/data/appException.dart';
-import 'package:voice_maker/data/network/baseApiServices.dart';
+import 'package:voice_changer/data/appException.dart';
+import 'package:voice_changer/data/network/baseApiServices.dart';
 
 class NetworkApiServices extends BaseApiServices {
   // Get API Method......

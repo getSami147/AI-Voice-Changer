@@ -6,15 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/data/appException.dart';
-import 'package:voice_maker/repository/homeRepository.dart';
-import 'package:voice_maker/res/appUrl.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/view/screens/dashboard.dart';
+import 'package:voice_changer/data/appException.dart';
+import 'package:voice_changer/repository/homeRepository.dart';
+import 'package:voice_changer/res/appUrl.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/view/screens/dashboard.dart';
 import 'package:http/http.dart' as http;
-import 'package:voice_maker/models/apiModels.dart';
-import 'package:voice_maker/viewModel/userViewModel.dart';
-import 'package:voice_maker/viewModel/userViewModel2.dart';
+import 'package:voice_changer/models/apiModels.dart';
+import 'package:voice_changer/viewModel/userViewModel.dart';
+import 'package:voice_changer/viewModel/userViewModel2.dart';
 
 class HomeViewModel with ChangeNotifier {
   List<dynamic> items = [];

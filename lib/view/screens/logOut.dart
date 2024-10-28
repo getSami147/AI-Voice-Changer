@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/utils/Colors.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/utils/constant.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/viewModel/UserViewModel.dart';
-import 'package:voice_maker/viewModel/authViewModel.dart';
+import 'package:voice_changer/utils/Colors.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/utils/constant.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/viewModel/UserViewModel.dart';
+import 'package:voice_changer/viewModel/authViewModel.dart';
 
 class AccountLogOut extends StatefulWidget {
   var refreshtoken;

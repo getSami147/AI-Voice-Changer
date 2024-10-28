@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/assetAudioPlayer.dart';
-import 'package:voice_maker/utils/audioPlayerdemo.dart';
-import 'package:voice_maker/view/screens/overview.dart';
-import 'package:voice_maker/utils/colors.dart';
-import 'package:voice_maker/view/sateManagement.dart';
-import 'package:voice_maker/view/authView/splashScreen.dart';
-import 'package:voice_maker/viewModel/authViewModel.dart';
-import 'package:voice_maker/viewModel/homeViewModel.dart';
-import 'package:voice_maker/viewModel/paginationViewModel.dart';
-import 'package:voice_maker/viewModel/services/playerProvider.dart';
-import 'package:voice_maker/viewModel/userViewModel.dart';
-import 'package:voice_maker/viewModel/userViewModel2.dart';
+import 'package:voice_changer/utils/colors.dart';
+import 'package:voice_changer/view/sateManagement.dart';
+import 'package:voice_changer/view/authView/splashScreen.dart';
+import 'package:voice_changer/viewModel/authViewModel.dart';
+import 'package:voice_changer/viewModel/homeViewModel.dart';
+import 'package:voice_changer/viewModel/paginationViewModel.dart';
+import 'package:voice_changer/viewModel/services/playerProvider.dart';
+import 'package:voice_changer/viewModel/userViewModel.dart';
+import 'package:voice_changer/viewModel/userViewModel2.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 

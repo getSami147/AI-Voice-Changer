@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:voice_maker/res/appUrl.dart';
+import 'package:voice_changer/res/appUrl.dart';
 
 class PaginationViewModel with ChangeNotifier {
  List<String> items = [];

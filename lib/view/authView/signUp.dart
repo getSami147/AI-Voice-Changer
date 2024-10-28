@@ -3,15 +3,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:provider/provider.dart';
-import 'package:voice_maker/utils/Colors.dart';
-import 'package:voice_maker/utils/Constant.dart';
-import 'package:voice_maker/utils/Images.dart';
-import 'package:voice_maker/utils/string.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/view/sateManagement.dart';
-import 'package:voice_maker/view/authView/logIn.dart';
-import 'package:voice_maker/view/components/component.dart';
-import 'package:voice_maker/viewModel/authViewModel.dart';
+import 'package:voice_changer/utils/Colors.dart';
+import 'package:voice_changer/utils/Constant.dart';
+import 'package:voice_changer/utils/Images.dart';
+import 'package:voice_changer/utils/string.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/view/sateManagement.dart';
+import 'package:voice_changer/view/authView/logIn.dart';
+import 'package:voice_changer/view/components/component.dart';
+import 'package:voice_changer/viewModel/authViewModel.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

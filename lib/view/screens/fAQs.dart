@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:voice_maker/utils/colors.dart';
-import 'package:voice_maker/utils/constant.dart';
-import 'package:voice_maker/utils/widget.dart';
-import 'package:voice_maker/view/authView/logIn.dart';
-import 'package:voice_maker/viewModel/homeViewModel.dart';
+import 'package:voice_changer/utils/colors.dart';
+import 'package:voice_changer/utils/constant.dart';
+import 'package:voice_changer/utils/widget.dart';
+import 'package:voice_changer/view/authView/logIn.dart';
+import 'package:voice_changer/viewModel/homeViewModel.dart';
 
 class FAQsScreen extends StatelessWidget {
   const FAQsScreen({super.key});
